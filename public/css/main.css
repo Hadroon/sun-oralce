@@ -157,7 +157,7 @@ img {
   float: left;
 }
 
-input, select {
+.auth input, select {
   width: 100%;
   border-radius: 5px;
   border: 0px;
@@ -167,7 +167,7 @@ input, select {
   /* margin-block-end: 1em; */
 }
 
-input[type="checkbox"] {
+.auth input[type="checkbox"] {
   width: auto;
   border-radius: 5px;
   border: 0px;
@@ -177,7 +177,7 @@ input[type="checkbox"] {
   /* margin-block-end: 1em; */
 }
 
-input:focus {
+.auth input:focus {
   outline-offset: 0px;
   outline: 0px;
 }
@@ -250,7 +250,7 @@ input:focus {
   transform: rotate(45deg);
 }
 
-input[type="submit"] {
+.auth input[type="submit"] {
   height: 50px;
   font-size: 20px;
   background: #0288D1;
