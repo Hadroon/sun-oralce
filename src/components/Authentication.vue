@@ -22,19 +22,19 @@
             <span class="form-label">Irányítószám:</span>
           </div>
           <div class="float-30" style="width: 79px;">
-            <input size type="text" name="lastname">
+            <input size type="text" name="zip">
           </div>
           <div class="float-20" style="width: 117px;">
             <span class="padding-left-10 form-label">Születési év:</span>
           </div>
           <div class="float-30" style="width: 100px;">
-            <input size type="text" name="firstname">
+            <input size type="text" name="bornyear">
           </div>
           <div class="float-20" style="width: 69px;">
             <span class="padding-left-10 form-label">Neme:</span>
           </div>
           <div class="float-30" style="width: 100px;">
-            <select>
+            <select name="gender">
               <option value="female">Nő</option>
               <option value="male">Férfi</option>
             </select>
@@ -45,20 +45,20 @@
             <span class="form-label">Telefonszám: +36</span>
           </div>
           <div class="float-30" style="width: 57px; padding-right: 10px">
-            <select>
+            <select name="region">
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="70">70</option>
             </select>
           </div>
           <div class="float-30" style="width: 70px;">
-            <input size type="text" name="firstname">
+            <input size type="text" name="phonenumber">
           </div>
           <div class="float-20" style="width: 101px;">
             <span class="padding-left-10 form-label">Email cím:</span>
           </div>
           <div class="float-30" style="width: 210px;">
-            <input size type="text" name="firstname">
+            <input size type="email" name="email">
           </div>
         </div>
         <div class="formrow">
@@ -66,29 +66,29 @@
             <span class="form-label">Jelszó:</span>
           </div>
           <div class="float-30" style="width: 174px">
-            <input size type="text" name="lastname">
+            <input size type="password" name="password">
           </div>
           <div class="float-20" style="width: 174px">
             <span class="padding-left-10 form-label">Jelszó mégegyszer:</span>
           </div>
           <div class="float-30" style="width: 174px">
-            <input size type="text" name="firstname">
+            <input size type="password" name="confirmpassword">
           </div>
         </div>
         <div class="formrow">
           <label class="container">
             One
-            <input type="checkbox" checked="checked">
+            <input type="checkbox" name="data1">
             <span class="checkmark"></span>
           </label>
           <label class="container">
             Two
-            <input type="checkbox">
+            <input type="checkbox" name="data2">
             <span class="checkmark"></span>
           </label>
           <label class="container">
             Three
-            <input type="checkbox">
+            <input type="checkbox" name="data3">
             <span class="checkmark"></span>
           </label>
         </div>
@@ -105,13 +105,13 @@
             <span class="form-label">Email cím:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="text" name="lastname">
+            <input size type="email" name="email">
           </div>
           <div class="float-20" style="width: 67px;">
             <span class="padding-left-10 form-label">Jelszó:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="text" name="firstname">
+            <input size type="password" name="password">
           </div>
         </div>
         <div class="formrow">
