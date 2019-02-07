@@ -35,6 +35,7 @@
       </div>
       <img class="separator" src="/images/grass.png" alt="">
     </div>
+    <auth-component />
     <div id="third">
       <form class="question" action="">
         <h2>3 km-nél kisebb távolságra…</h2>
@@ -67,7 +68,13 @@
 </template>
 
 <script>
+import AuthComponent from '@/components/Authentication.vue'
+
 export default {
-    name: 'mainWrapper'
+    name: 'mainWrapper',
+    components: {
+      AuthComponent
+    }
+
 }
 </script>
