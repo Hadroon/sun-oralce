@@ -2,13 +2,19 @@
   <div class="auth">
     <div class="reg">
       <h2>Regisztráció</h2>
-      <form action method="post">
+      <p v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="error in errors" :key="error.id">{{ error }}</li>
+        </ul>
+      </p>
+      <form @submit="postRegistration" action="" method="post">
         <div class="formrow">
           <div class="float-20">
             <span class="form-label">Vezetéknév:</span>
           </div>
           <div class="float-30">
-            <input size type="text" name="lastname">
+            <input v-model="lastName" type="text" name="lastname">
           </div>
           <div class="float-20">
             <span class="padding-left-10 form-label">Keresztnév:</span>
@@ -77,17 +83,17 @@
         </div>
         <div class="formrow">
           <label class="container">
-            One
+            Adatvédelmi
             <input type="checkbox" name="data1">
             <span class="checkmark"></span>
           </label>
           <label class="container">
-            Two
+            Adatvédelmi
             <input type="checkbox" name="data2">
             <span class="checkmark"></span>
           </label>
           <label class="container">
-            Three
+            Adatvédelmi
             <input type="checkbox" name="data3">
             <span class="checkmark"></span>
           </label>
@@ -118,12 +124,43 @@
           <input type="submit" value="Belépés">
         </div>
       </form>
+      <div>
+        <h2>Jelentkez be velük</h2>
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+      </div>
+    <!-- <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
+    </script> -->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AuthComponent"
+  name: "AuthComponent",
+  data() {
+    return {
+      errors: [],
+      lastName: null
+    }
+  },
+  methods: {
+    postRegistration: function () {
+
+    }
+  }
 };
 </script>
