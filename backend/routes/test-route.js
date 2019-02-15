@@ -20,10 +20,10 @@ router.get("/mail", function(req, res) {
     auth: {
       user: 'info@kornyezetrefel.hu',
       pass: process.env.MAILPASS
-    } // ,
-    // tls: {
-    //   rejectUnauthorized: false
-    // }
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   // process.env.PORT
@@ -40,7 +40,7 @@ router.get("/mail", function(req, res) {
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
-      res.status(200).send('A levél elküldve');
+      res.status(200).send('Email sent: ' + info.response);
     }
   });
   res.status(200).send('A levél elküldve');
