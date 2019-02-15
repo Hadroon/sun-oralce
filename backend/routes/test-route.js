@@ -47,7 +47,8 @@ router.get("/mail", function(req, res) {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
+      console.log('Ez a hiba::::::::::::::::::::::', error);
+      console.log('Ez a INFO::::::::::::::::::::::', info);
     } else {
       console.log('Email sent: ' + info.response);
       res.status(200).send('Email sent: ' + info.response);
