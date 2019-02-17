@@ -14,13 +14,13 @@
             <span class="form-label">Vezetéknév:</span>
           </div>
           <div class="float-30">
-            <input v-model="newUser.lastName" type="text" name="lastname">
+            <input v-model="newUser.lastName" type="text" name="lastname" required>
           </div>
           <div class="float-20">
             <span class="padding-left-10 form-label">Keresztnév:</span>
           </div>
           <div class="float-30">
-            <input size type="text" v-model="newUser.firstname" name="firstname">
+            <input size type="text" v-model="newUser.firstname" name="firstname" required>
           </div>
         </div>
         <div class="formrow">
@@ -28,19 +28,19 @@
             <span class="form-label">Irányítószám:</span>
           </div>
           <div class="float-30" style="width: 79px;">
-            <input size type="text" v-model="newUser.zip" name="zip">
+            <input size type="text" v-model="newUser.zip" name="zip" required>
           </div>
           <div class="float-20" style="width: 117px;">
             <span class="padding-left-10 form-label">Születési év:</span>
           </div>
           <div class="float-30" style="width: 100px;">
-            <input size type="text" v-model="newUser.bornYear" name="bornyear">
+            <input size type="text" v-model="newUser.bornYear" name="bornyear" required>
           </div>
           <div class="float-20" style="width: 69px;">
             <span class="padding-left-10 form-label">Neme:</span>
           </div>
           <div class="float-30" style="width: 100px;">
-            <select name="gender" v-model="newUser.gender">
+            <select name="gender" v-model="newUser.gender" required>
               <option value="female">Nő</option>
               <option value="male">Férfi</option>
             </select>
@@ -178,6 +178,7 @@ export default {
   methods: {
     postRegistration: function (e) {
       e.preventDefault();
+
       alert('haho')
     },
     handleSubmit: async function(e){

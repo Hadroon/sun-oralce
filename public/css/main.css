@@ -13,6 +13,10 @@ img {
   display: block;
 }
 
+input[type=submit] {
+  cursor: pointer;
+}
+
 #first {
   position: relative;
 }
