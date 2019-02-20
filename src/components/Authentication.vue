@@ -9,98 +9,101 @@
         </ul>
       </p>
       <form @submit="postRegistration" action="" method="post">
-        <div class="formrow">
-          <div class="float-20">
-            <span class="form-label">Vezetéknév:</span>
+        <fieldset :disabled="formDisabled">
+          <div class="formrow">
+            <div class="float-20">
+              <span class="form-label">Vezetéknév:</span>
+            </div>
+            <div class="float-30">
+              <input class="authInput" v-model="newUser.lastName" type="text" name="lastname" required>
+            </div>
+            <div class="float-20">
+              <span class="padding-left-10 form-label">Keresztnév:</span>
+            </div>
+            <div class="float-30">
+              <input class="authInput" size type="text" v-model="newUser.firstname" name="firstname" required>
+            </div>
           </div>
-          <div class="float-30">
-            <input v-model="newUser.lastName" type="text" name="lastname" required>
+          <div class="formrow">
+            <div class="float-20" style="width: 115px;">
+              <span class="form-label">Irányítószám:</span>
+            </div>
+            <div class="float-30" style="width: 79px;">
+              <input class="authInput" v-mask="'####'" type="text" v-model="newUser.zip" name="zip" required>
+            </div>
+            <div class="float-20" style="width: 117px;">
+              <span class="padding-left-10 form-label">Születési év:</span>
+            </div>
+            <div class="float-30" style="width: 100px;">
+              <input class="authInput" v-mask="'####'" type="text" v-model="newUser.bornYear" name="bornyear" required>
+            </div>
+            <div class="float-20" style="width: 69px;">
+              <span class="padding-left-10 form-label">Neme:</span>
+            </div>
+            <div class="float-30" style="width: 100px;">
+              <select class="authInput" name="gender" v-model="newUser.gender" required>
+                <option value="female">Nő</option>
+                <option value="male">Férfi</option>
+              </select>
+            </div>
           </div>
-          <div class="float-20">
-            <span class="padding-left-10 form-label">Keresztnév:</span>
+          <div class="formrow">
+            <div class="float-20" style="width: 142px;">
+              <span class="form-label">Telefonszám: +36</span>
+            </div>
+            <div class="float-30" style="width: 57px; padding-right: 10px">
+              <select class="authInput" name="operator" v-model="newUser.operator" required>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="70">70</option>
+              </select>
+            </div>
+            <div class="float-30" style="width: 70px;">
+              <input class="authInput" v-mask="'###-##-##'" type="text" name="phonenumber" v-model="newUser.phonenumber" required>
+            </div>
+            <div class="float-20" style="width: 101px;">
+              <span class="padding-left-10 form-label">Email cím:</span>
+            </div>
+            <div class="float-30" style="width: 210px;">
+              <input class="authInput" size type="email" v-model="newUser.email" name="email" required>
+            </div>
           </div>
-          <div class="float-30">
-            <input size type="text" v-model="newUser.firstname" name="firstname" required>
+          <div class="formrow">
+            <div class="float-20" style="width: 57px">
+              <span class="form-label">Jelszó:</span>
+            </div>
+            <div class="float-30" style="width: 174px">
+              <input class="authInput" size type="password" v-model="newUser.password" name="password" required>
+            </div>
+            <div class="float-20" style="width: 174px">
+              <span class="padding-left-10 form-label">Jelszó mégegyszer:</span>
+            </div>
+            <div class="float-30" style="width: 174px">
+              <input class="authInput" size type="password" v-model="newUser.confirmpassword" name="confirmpassword" required>
+            </div>
           </div>
-        </div>
-        <div class="formrow">
-          <div class="float-20" style="width: 115px;">
-            <span class="form-label">Irányítószám:</span>
+          <!-- TODO: check what is required -->
+          <div class="formrow">
+            <label class="container">
+              Adatvédelmi
+              <input type="checkbox" v-model="newUser.data1" name="data1">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">
+              Adatvédelmi
+              <input type="checkbox" v-model="newUser.data2" name="data2">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">
+              Adatvédelmi
+              <input type="checkbox" v-model="newUser.data3" name="data3">
+              <span class="checkmark"></span>
+            </label>
           </div>
-          <div class="float-30" style="width: 79px;">
-            <input size type="text" v-model="newUser.zip" name="zip" required>
+          <div class="formrow" style="text-align: center;">
+            <input type="submit" :class="submitStyle" value="Regisztrálok">
           </div>
-          <div class="float-20" style="width: 117px;">
-            <span class="padding-left-10 form-label">Születési év:</span>
-          </div>
-          <div class="float-30" style="width: 100px;">
-            <input size type="text" v-model="newUser.bornYear" name="bornyear" required>
-          </div>
-          <div class="float-20" style="width: 69px;">
-            <span class="padding-left-10 form-label">Neme:</span>
-          </div>
-          <div class="float-30" style="width: 100px;">
-            <select name="gender" v-model="newUser.gender" required>
-              <option value="female">Nő</option>
-              <option value="male">Férfi</option>
-            </select>
-          </div>
-        </div>
-        <div class="formrow">
-          <div class="float-20" style="width: 142px;">
-            <span class="form-label">Telefonszám: +36</span>
-          </div>
-          <div class="float-30" style="width: 57px; padding-right: 10px">
-            <select name="operator" v-model="newUser.operator">
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="70">70</option>
-            </select>
-          </div>
-          <div class="float-30" style="width: 70px;">
-            <input size type="text" name="phonenumber" v-model="newUser.phonenumber">
-          </div>
-          <div class="float-20" style="width: 101px;">
-            <span class="padding-left-10 form-label">Email cím:</span>
-          </div>
-          <div class="float-30" style="width: 210px;">
-            <input size type="email" v-model="newUser.email" name="email">
-          </div>
-        </div>
-        <div class="formrow">
-          <div class="float-20" style="width: 57px">
-            <span class="form-label">Jelszó:</span>
-          </div>
-          <div class="float-30" style="width: 174px">
-            <input size type="password" v-model="newUser.password" name="password">
-          </div>
-          <div class="float-20" style="width: 174px">
-            <span class="padding-left-10 form-label">Jelszó mégegyszer:</span>
-          </div>
-          <div class="float-30" style="width: 174px">
-            <input size type="password" v-model="newUser.confirmpassword" name="confirmpassword">
-          </div>
-        </div>
-        <div class="formrow">
-          <label class="container">
-            Adatvédelmi
-            <input type="checkbox" v-model="newUser.data1" name="data1">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container">
-            Adatvédelmi
-            <input type="checkbox" v-model="newUser.data2" name="data2">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container">
-            Adatvédelmi
-            <input type="checkbox" v-model="newUser.data3" name="data3">
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div class="formrow">
-          <input type="submit" value="Regisztrálok">
-        </div>
+        </fieldset>
       </form>
     </div>
     <div class="reg">
@@ -111,13 +114,13 @@
             <span class="form-label">Email cím:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="email" v-model="userLoginData.email" name="email">
+            <input size type="email" v-model="userLoginData.email" name="email" required>
           </div>
           <div class="float-20" style="width: 67px;">
             <span class="padding-left-10 form-label">Jelszó:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="password" v-model="userLoginData.password" name="password">
+            <input size type="password" v-model="userLoginData.password" name="password" required>
           </div>
         </div>
         <div class="formrow">
@@ -154,6 +157,8 @@ export default {
   data() {
     return {
       errors: [],
+      formDisabled: false,
+      submitStyle: 'beforeLoading',
       newUser: {
         lastName: null,
         firstname: null,
@@ -177,29 +182,32 @@ export default {
   },
   methods: {
     postRegistration: function (e) {
-      e.preventDefault();
+      e.preventDefault()
+      this.formDisabled = true
+      this.submitStyle = 'loading'
+      // if (this.firstname)
 
-      alert('haho')
+      // alert('haho')
     },
     handleSubmit: async function(e){
-      e.preventDefault();
-      this.spinner.loading = true;
-      this.error = null;
+      e.preventDefault()
+      this.spinner.loading = true
+      this.error = null
       try {
-        let response = await this.$http.post('/reg', {user: this.user});
+        let response = await this.$http.post('/reg', {user: this.user})
         if(response.data.succesMessage) {
-          this.succesMessage = response.data.succesMessage;
-          this.spinner.loading = false;
-          return;
+          this.succesMessage = response.data.succesMessage
+          this.spinner.loading = false
+          return
         } else if (response.data.error) {
-          this.error = response.data.error;
-          this.spinner.loading = false;
-          return;
+          this.error = response.data.error
+          this.spinner.loading = false
+          return
         }
       } catch (err) {
-        this.spinner.loading = false;
-        console.log(err);
-        return;
+        this.spinner.loading = false
+        console.log(err)
+        return
       }
     }
   }
