@@ -181,13 +181,26 @@ export default {
     }
   },
   methods: {
-    postRegistration: function (e) {
+    postRegistration: async function (e) {
       e.preventDefault()
       this.formDisabled = true
       this.submitStyle = 'loading'
-      // if (this.firstname)
-
-      // alert('haho')
+      try {
+        let response = await this.$http.post('/reg', {newUser: this.newUser})
+        console.log(response)
+        if(response.data.succesMessage) {
+          this.succesMessage = response.data.succesMessage
+          this.spinner.loading = false
+          return
+        } else if (response.data.error) {
+          this.error = response.data.error
+          return
+        }
+        return
+      } catch (err) {
+        console.log(err)
+        return
+      }
     },
     handleSubmit: async function(e){
       e.preventDefault()
