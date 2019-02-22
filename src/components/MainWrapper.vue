@@ -61,8 +61,6 @@
         <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
         <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
       </form>
-
-
     </div>
   </div>
 </template>
@@ -71,10 +69,9 @@
 import AuthComponent from '@/components/Authentication.vue'
 
 export default {
-    name: 'mainWrapper',
-    components: {
-      AuthComponent
-    }
-
+  name: 'mainWrapper',
+  components: {
+    AuthComponent
+  }
 }
 </script>

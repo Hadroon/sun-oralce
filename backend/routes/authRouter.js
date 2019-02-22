@@ -11,59 +11,33 @@ var User = require("../models/users");
 var hostName = require('os').hostname();
 
 router.post("/reg", function (req, res) {
-  const reqUser = req.body.user;
 
-  console.log(req.body.newUser);
+  if (!req.body.newUser) return res.status(500);
+  const reqUser = req.body.newUser;
+  let errors = [];
 
-  return res.status(200).send({
-    error: req.body.newUser
-  });
   if (reqUser.firstName.length < 2 ||
     reqUser.lastName.length < 2 ||
-    reqUser.zipCode.length < 4 ||
-    reqUser.city.length < 2 ||
-    reqUser.street.length < 2 ||
-    reqUser.houseNumber.length < 1 ||
-    reqUser.phoneNumber.length < 4
+    reqUser.zip.length < 4 ||
+    reqUser.phonenumber.length !== 6
   ) {
-    return res.status(200).send({
-      error: "Kérlek add meg az összes adatot."
-    });
+    errors.push("Kérlek ellenőrizd a megadott adatokat.");
   }
-
   var regexPatt = new RegExp(
     "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
   );
   var isValidEmail = regexPatt.test(reqUser.email);
+  if (!isValidEmail) errors.push( "A megadott emailcím nem megfelelő formátumú. Kérlek ellenőrizd.");
+  if (!reqUser.password || !reqUser.confirmpassword) errors.push("Kérlek add meg jelszót.");
+  if (reqUser.password.length < 6 || reqUser.confirmpassword.length < 6) errors.push("A jelszónak legalább 6 karakter hosszúnak kell lennie.");
+  if (reqUser.password !== reqUser.confirmpassword) errors.push("A jelszavaknak meg kell egyeznie.");
+  // TODO: check eula
+  // if (reqUser.eula != true || reqUser.correctAge != true) errors.push("Az oldal használatához a szabályzatot és az adatvédelmi szabályzatot is el kell fogadni.");
 
-  if (!isValidEmail) {
+  if(errors.length !== 0) {
     return res.status(200).send({
-      error: "A megadott emailcím nem megfelelő formátumú. Kérlek ellenőrizd."
-    });
-  }
-
-
-  if (!reqUser.password || !reqUser.passwordTwo) {
-    return res.status(200).send({
-      error: "Kérlek add meg jelszót."
-    });
-  }
-
-  if (reqUser.password.length < 6 || reqUser.passwordTwo.length < 6) {
-    return res.status(200).send({
-      error: "A jelszónak legalább 6 karakter hosszúnak kell lennie."
-    });
-  }
-
-  if (reqUser.password !== reqUser.passwordTwo) {
-    return res.status(200).send({ error: "A jelszavaknak meg kell egyeznie." });
-  }
-
-  if (reqUser.eula != true || reqUser.correctAge != true) {
-    return res.status(200).send({
-      error:
-        "Az oldal használatához a szabályzatot és az adatvédelmi szabályzatot is el kell fogadni."
-    });
+      error: errors
+    })
   }
 
   // asynchronous
@@ -94,7 +68,7 @@ router.post("/reg", function (req, res) {
 
         // TODO: ha van user és az email címe katív akkor belogineltetni.
 
-        delete reqUser.passwordTwo;
+        delete reqUser.confirmpassword;
         var newUserObject = new User(reqUser);
 
         newUserObject.password = newUserObject.generateHash(reqUser.password);

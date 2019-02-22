@@ -18,14 +18,14 @@ var authRouter = require('./backend/routes/authRouter');
 
 app = express();
 
-app.use((req, res, next) => {
-    console.log(req.header('x-forwarded-proto'));
-    if (req.header('x-forwarded-proto') !== 'https') {
-      res.redirect(`https://${req.header('host')}${req.url}`)
-    } else {
-      next();
-    }
-  });
+// app.use((req, res, next) => {
+//     console.log(req.header('x-forwarded-proto'));
+//     if (req.header('x-forwarded-proto') !== 'https') {
+//       res.redirect(`https://${req.header('host')}${req.url}`)
+//     } else {
+//       next();
+//     }
+//   });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

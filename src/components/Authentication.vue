@@ -3,8 +3,8 @@
     <div class="reg">
       <h2>Regisztráció</h2>
       <p v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
+        <!-- <b>Please correct the following error(s):</b> -->
+        <ul class="listFormat">
           <li v-for="error in errors" :key="error.id">{{ error }}</li>
         </ul>
       </p>
@@ -21,7 +21,7 @@
               <span class="padding-left-10 form-label">Keresztnév:</span>
             </div>
             <div class="float-30">
-              <input class="authInput" size type="text" v-model="newUser.firstname" name="firstname" required>
+              <input class="authInput" size type="text" v-model="newUser.firstName" name="firstName" required>
             </div>
           </div>
           <div class="formrow">
@@ -153,15 +153,15 @@
 
 <script>
 export default {
-  name: "AuthComponent",
-  data() {
+  name: 'AuthComponent',
+  data () {
     return {
       errors: [],
       formDisabled: false,
       submitStyle: 'beforeLoading',
       newUser: {
         lastName: null,
-        firstname: null,
+        firstName: null,
         zip: null,
         bornYear: null,
         gender: null,
@@ -181,34 +181,50 @@ export default {
     }
   },
   methods: {
+    pushError: function (error) {
+      this.errors.push(error)
+    },
     postRegistration: async function (e) {
       e.preventDefault()
+
+      this.errors = []
+
+      if (Number(this.newUser.bornYear) < 1900) this.pushError('Kérlek ellenőrizd a születési éved')
+      if (Number(this.newUser.bornYear) > 2000) this.pushError('Az oldal használatához legalább 18 évesnek kell lenned.')
+      if (this.newUser.password.localeCompare(this.newUser.confirmpassword)) this.pushError('A két jelszónak meg kell egyeznie.')
+      if (this.newUser.password.length < 7 ||
+        this.newUser.confirmpassword.length < 7) {
+        this.pushError('A jelszónak legalább 6 karakter hosszúnak kell lennie.')
+      }
+
+      // TODO: check adatvédelni too
+
+      if (this.errors.length !== 0) return
+      this.newUser.phonenumber = this.newUser.phonenumber.replace(/-/g, '')
       this.formDisabled = true
       this.submitStyle = 'loading'
       try {
-        let response = await this.$http.post('/reg', {newUser: this.newUser})
-        console.log(response)
-        if(response.data.succesMessage) {
+        let response = await this.$http.post('/reg', { newUser: this.newUser })
+        if (response.data.succesMessage) {
+          // TODO: what is succes?
           this.succesMessage = response.data.succesMessage
-          this.spinner.loading = false
           return
         } else if (response.data.error) {
-          this.error = response.data.error
+          this.errors = response.data.error
           return
         }
         return
       } catch (err) {
         console.log(err)
-        return
       }
     },
-    handleSubmit: async function(e){
+    handleSubmit: async function (e) {
       e.preventDefault()
       this.spinner.loading = true
       this.error = null
       try {
-        let response = await this.$http.post('/reg', {user: this.user})
-        if(response.data.succesMessage) {
+        let response = await this.$http.post('/reg', { user: this.user })
+        if (response.data.succesMessage) {
           this.succesMessage = response.data.succesMessage
           this.spinner.loading = false
           return
@@ -220,7 +236,6 @@ export default {
       } catch (err) {
         this.spinner.loading = false
         console.log(err)
-        return
       }
     }
   }
