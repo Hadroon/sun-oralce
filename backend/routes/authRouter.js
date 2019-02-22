@@ -10,6 +10,19 @@ const config = require("../config");
 var User = require("../models/users");
 var hostName = require('os').hostname();
 
+const transporter = nodemailer.createTransport({
+  host: 'cl05.webspacecontrol.com',
+  post: 465,
+  secure: true,
+  auth: {
+    user: 'info@kornyezetrefel.hu',
+    pass: process.env.MAILPASS || config.infoEmailPass
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
 router.post("/reg", function (req, res) {
 
   if (!req.body.newUser) return res.status(500);
@@ -19,7 +32,7 @@ router.post("/reg", function (req, res) {
   if (reqUser.firstName.length < 2 ||
     reqUser.lastName.length < 2 ||
     reqUser.zip.length < 4 ||
-    reqUser.phonenumber.length !== 6
+    reqUser.phonenumber.length !== 7
   ) {
     errors.push("Kérlek ellenőrizd a megadott adatokat.");
   }
@@ -43,9 +56,6 @@ router.post("/reg", function (req, res) {
   // asynchronous
   // User.findOne wont fire unless data is sent back
   process.nextTick(function () {
-    // find a user whose email is the same as the forms email
-    // we are checking to see if the user trying to login already exists
-    // User.findOne({ 'local.email': email }, function (err, user) {
     User.findOne({ email: reqUser.email }, function (err, user) {
       // if there are any errors, return the error
       if (err) {
@@ -56,8 +66,8 @@ router.post("/reg", function (req, res) {
       if (user) {
         if (user.isEmailVerified === false) {
           return res.status(200).send({
-            error:
-              "Email címedre aktíváló emailt küldtünk már. Kérünk aktíváld az email címedet"
+            succesMessage:
+              ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet"]
           });
         }
 
@@ -70,7 +80,7 @@ router.post("/reg", function (req, res) {
 
         delete reqUser.confirmpassword;
         var newUserObject = new User(reqUser);
-
+        console.log(newUserObject);
         newUserObject.password = newUserObject.generateHash(reqUser.password);
 
         var date = new Date();
@@ -98,21 +108,11 @@ router.post("/reg", function (req, res) {
         newUserObject.save(function (err) {
           if (err) throw err;
 
-          var transporter = nodemailer.createTransport({
-            // service: 'gmail',
-            host: 'mail.artistatwork.eu',
-            post: 587,
-            auth: {
-              user: 'info@artistatwork.eu',
-              pass: 'Jelszo24!'
-            }
-          });
-
           let mailOptions = {
-            from: 'info@artistatwork.eu',
+            from: 'info@kornyezetrefel.hu',
             to: newUserObject.email,
             subject: 'Aktíváló email',
-            html: '<a href="https://node-chris.herokuapp.com/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+            html: '<a href="https://www.kornyezetrefel.hu/validateemail/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
           };
 
           transporter.sendMail(mailOptions, function (error, info) {
@@ -122,7 +122,7 @@ router.post("/reg", function (req, res) {
               console.log('Email sent: ' + info.response);
               res.status(200).send({
                 succesMessage:
-                  "Email címedre aktíváló emailt küldtünk már. Kérünk aktíváld az email címedet."
+                  ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet."]
               });
             }
           });
@@ -130,6 +130,91 @@ router.post("/reg", function (req, res) {
       }
     });
   });
+});
+
+router.post("/login", function (req, res) {
+
+  console.log(req.body);
+  const loginData = req.body.user
+  console.log((loginData));
+
+  if (!loginData) {
+    return res.status(200).send({ error: ["Bejelentkezéshez add meg email címedet és jelszavad."] });
+  }
+
+
+  User.findOne({ email: loginData.email }, function (err, user) {
+    if (err) {
+      return res.status(200).send({
+        error:
+          ["Nem megfelelő adatok."]
+      });
+    }
+
+    if (user) {
+      const passCrypt = bcrypt.compareSync(loginData.password, user.password);
+
+      if (!passCrypt) {
+        return res.status(200).send({ error: ["Nem megfelelő adatok."] });
+      }
+
+      if (user.isEmailVerified === false) {
+        return res.status(200).send({
+          info:
+            ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet."]
+        });
+      }
+
+      let fullName = user.lastName + ' ' + user.firstName;
+
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+        expiresIn: 86400
+      });
+
+      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles });
+
+    } else {
+      return res.status(200).send({ error: ["Hiba történt. Kérlek ellenőrizd a belépési adatokat."] });
+    }
+  });
+});
+
+router.get('/validateemail/:token', async (req, res) => {
+  try {
+    let user = await User.findOne({ emailVerificationToken: req.params.token });
+    if (user) {
+      user.isEmailVerified = true;
+      await user.save();
+
+      let fullName = user.lastName + ' ' + user.firstName;
+
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+        expiresIn: 86400
+      });
+
+
+      res.status(200).send({ auth: true, token: token, name: fullName });
+    }
+  } catch (err) {
+    throw err;
+  }
+});
+
+router.post('/check', async (req, res) => {
+  if (!req.body.token) return;
+  try {
+    var decoded = jwt.verify(req.body.token, config.secret);
+    let user = await User.findById(decoded.id, null, {lean: true});
+    if(!user) return res.status(200).send({ error: true });
+  }
+  catch (err) {
+    return res.status(200).send({ error: true });
+  }
+
+  if (decoded.name) {
+    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles });
+  }
+  return res.status(200).send({ error: true });
 });
 
 module.exports = router;

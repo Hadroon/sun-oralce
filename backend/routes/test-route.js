@@ -15,7 +15,6 @@ router.get("/mail", function(req, res) {
   console.log(process.env.MAILPASS)
 
   var transporter = nodemailer.createTransport({
-    // service: 'gmail',
     host: 'cl05.webspacecontrol.com',
     post: 465,
     secure: true,

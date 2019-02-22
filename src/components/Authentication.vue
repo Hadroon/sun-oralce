@@ -3,9 +3,13 @@
     <div class="reg">
       <h2>Regisztráció</h2>
       <p v-if="errors.length">
-        <!-- <b>Please correct the following error(s):</b> -->
-        <ul class="listFormat">
+        <ul class="errorFormat">
           <li v-for="error in errors" :key="error.id">{{ error }}</li>
+        </ul>
+      </p>
+      <p v-if="infos.length">
+        <ul class="infoFormat">
+          <li v-for="info in infos" :key="info.id">{{ info }}</li>
         </ul>
       </p>
       <form @submit="postRegistration" action="" method="post">
@@ -108,23 +112,33 @@
     </div>
     <div class="reg">
       <h2>Belépés</h2>
-      <form action method="post">
+      <p v-if="loginErrors.length">
+        <ul class="errorFormat">
+          <li v-for="error in loginErrors" :key="error.id">{{ error }}</li>
+        </ul>
+      </p>
+      <p v-if="loginInfos.length">
+        <ul class="infoFormat">
+          <li v-for="info in loginInfos" :key="info.id">{{ info }}</li>
+        </ul>
+      </p>
+      <form action @submit="login" method="post">
         <div class="formrow">
           <div class="float-20" style="width: 90px;">
             <span class="form-label">Email cím:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="email" v-model="userLoginData.email" name="email" required>
+            <input size type="email" class="authInput" v-model="userLoginData.email" name="email" required>
           </div>
           <div class="float-20" style="width: 67px;">
             <span class="padding-left-10 form-label">Jelszó:</span>
           </div>
           <div class="float-30" style="width: 211px;">
-            <input size type="password" v-model="userLoginData.password" name="password" required>
+            <input size type="password" class="authInput" v-model="userLoginData.password" name="password" required>
           </div>
         </div>
         <div class="formrow">
-          <input type="submit" value="Belépés">
+          <input type="submit" :class="submitStyle" value="Belépés">
         </div>
       </form>
       <div>
@@ -157,6 +171,9 @@ export default {
   data () {
     return {
       errors: [],
+      infos: [],
+      loginErrors: [],
+      loginInfos: [],
       formDisabled: false,
       submitStyle: 'beforeLoading',
       newUser: {
@@ -180,6 +197,7 @@ export default {
       }
     }
   },
+  props: ['user', 'authenticated'],
   methods: {
     pushError: function (error) {
       this.errors.push(error)
@@ -205,15 +223,42 @@ export default {
       this.submitStyle = 'loading'
       try {
         let response = await this.$http.post('/reg', { newUser: this.newUser })
+        console.log(response)
         if (response.data.succesMessage) {
           // TODO: what is succes?
-          this.succesMessage = response.data.succesMessage
+          this.infos = response.data.succesMessage
+          this.formDisabled = false
+          this.submitStyle = 'beforeLoading'
           return
         } else if (response.data.error) {
           this.errors = response.data.error
+          this.formDisabled = false
+          this.submitStyle = 'beforeLoading'
           return
         }
         return
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    login: async function (e) {
+      e.preventDefault()
+      this.loginErrors = []
+
+      try {
+        let response = await this.$http.post('/login', { user: this.userLoginData })
+        if(response.data.error) {
+          return this.loginErrors = response.data.error
+        }
+        if(response.data.info) {
+          return this.loginInfos = response.data.info
+        }
+        if (response.data.auth) {
+            localStorage.sunToken = response.data.token
+            this.authenticated.auth = response.data.auth
+            this.authenticated.name = response.data.name
+            this.user.name = response.data.name
+        }
       } catch (err) {
         console.log(err)
       }

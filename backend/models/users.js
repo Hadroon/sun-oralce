@@ -1,34 +1,30 @@
-// app/models/user.js
-// load the things we need
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: String,
+  firstName: String,
+  lastName: String,
+  zip: Number,
+  phonenumber: String,
+  operator: Number,
+  bornYear: Number,
+  gender: String,
+  eula: Boolean,
+  correctAge: Boolean,
 
-    email: { type: String, required: true, unique: true },
-    password: String,
-    firstName: String,
-    lastName: String,
-    zipCode: Number,
-    city: String,
-    street: String,
-    houseNumber: String,
-    phoneNumber: String,
-    eula: Boolean,
-    correctAge: Boolean,
-
-    isEmailVerified: Boolean,
-    registered: Date,
-    emailVerificationToken: String,
-    passwordToken: String,
-    roles: Array
-
+  isEmailVerified: Boolean,
+  registered: Date,
+  emailVerificationToken: String,
+  passwordToken: String,
+  roles: Array
 });
 
-userSchema.methods.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+userSchema.methods.generateHash = function (password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid

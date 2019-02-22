@@ -291,12 +291,20 @@ input[type="submit"] {
   transition: all 0.3s ease;
 }
 
-.listFormat {
+.errorFormat {
   border: 1px solid #F50057;
   border-radius: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
   background: #F50057;
+}
+
+.infoFormat {
+  border: 1px solid #00C853;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #00C853;
 }
 
 @keyframes rotateAnimation {

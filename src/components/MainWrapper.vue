@@ -35,7 +35,11 @@
       </div>
       <img class="separator" src="/images/grass.png" alt="">
     </div>
-    <auth-component />
+    <auth-component 
+    v-if="!authenticated.auth"
+    :user="user"
+    :authenticated="authenticated" />
+    <p v-if="authenticated.auth">{{user.name}}</p>
     <div id="third">
       <form class="question" action="">
         <h2>3 km-nél kisebb távolságra…</h2>
@@ -72,6 +76,46 @@ export default {
   name: 'mainWrapper',
   components: {
     AuthComponent
+  },
+  created () {
+    const sunToken = localStorage.getItem('sunToken')
+    if (sunToken) this.checkUser(sunToken)
+  },
+  data () {
+    return {
+      authenticated: {
+        auth: false,
+        roles: null
+      },
+      user: {}
+    }
+  },
+  methods: {
+    checkUser: async function() {
+      try {
+        if (this.authenticated.auth) return
+        let response = await this.$http.post("/check", {
+          token: localStorage.henkeltoken
+        });
+        if (response.data.error) {
+          this.authenticated.auth = false;
+          localStorage.removeItem('henkeltoken');
+          this.spinner.loading = false;
+          return;
+        }
+        if (response.data.auth) {
+          this.authenticated.auth = response.data.auth;
+          this.authenticated.name = response.data.name;
+          if (response.data.roles.includes('admin')) {
+            this.authenticated.isAdmin = true;
+          }
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
   }
 }
 </script>
