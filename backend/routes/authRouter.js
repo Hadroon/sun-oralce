@@ -110,8 +110,8 @@ router.post('/reg', function (req, res) {
             from: 'info@kornyezetrefel.hu',
             to: newUserObject.email,
             subject: 'Aktíváló email',
-            // html: '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
-            html: '<a href="http://localhost:8080/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+            html: '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+            // html: '<a href="http://localhost:8080/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
           }
 
           transporter.sendMail(mailOptions, function (error, info) {
