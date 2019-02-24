@@ -1,14 +1,14 @@
-var express = require("express");
-var router = express.Router();
-var nodemailer = require("nodemailer");
-var RandomString = require("randomstring");
-const jwt = require("jsonwebtoken");
-var bcrypt = require("bcrypt-nodejs");
-// var ObjectId = require('mongoose').Types.ObjectId; 
-const config = require("../config");
+var express = require('express')
+var router = express.Router()
+var nodemailer = require('nodemailer')
+var RandomString = require('randomstring')
+const jwt = require('jsonwebtoken')
+var bcrypt = require('bcrypt-nodejs')
+// var ObjectId = require('mongoose').Types.ObjectId;
+const config = require('../config')
 
-var User = require("../models/users");
-var hostName = require('os').hostname();
+var User = require('../models/users')
+// var hostName = require('os').hostname()
 
 const transporter = nodemailer.createTransport({
   host: 'cl05.webspacecontrol.com',
@@ -21,33 +21,32 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   }
-});
+})
 
-router.post("/reg", function (req, res) {
-
-  if (!req.body.newUser) return res.status(500);
-  const reqUser = req.body.newUser;
-  let errors = [];
+router.post('/reg', function (req, res) {
+  if (!req.body.newUser) return res.status(500)
+  const reqUser = req.body.newUser
+  let errors = []
 
   if (reqUser.firstName.length < 2 ||
     reqUser.lastName.length < 2 ||
     reqUser.zip.length < 4 ||
     reqUser.phonenumber.length !== 7
   ) {
-    errors.push("Kérlek ellenőrizd a megadott adatokat.");
+    errors.push('Kérlek ellenőrizd a megadott adatokat.')
   }
   var regexPatt = new RegExp(
     "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
   );
-  var isValidEmail = regexPatt.test(reqUser.email);
-  if (!isValidEmail) errors.push( "A megadott emailcím nem megfelelő formátumú. Kérlek ellenőrizd.");
-  if (!reqUser.password || !reqUser.confirmpassword) errors.push("Kérlek add meg jelszót.");
-  if (reqUser.password.length < 6 || reqUser.confirmpassword.length < 6) errors.push("A jelszónak legalább 6 karakter hosszúnak kell lennie.");
-  if (reqUser.password !== reqUser.confirmpassword) errors.push("A jelszavaknak meg kell egyeznie.");
+  var isValidEmail = regexPatt.test(reqUser.email)
+  if (!isValidEmail) errors.push('A megadott emailcím nem megfelelő formátumú. Kérlek ellenőrizd.')
+  if (!reqUser.password || !reqUser.confirmpassword) errors.push('Kérlek add meg jelszót.')
+  if (reqUser.password.length < 6 || reqUser.confirmpassword.length < 6) errors.push('A jelszónak legalább 6 karakter hosszúnak kell lennie.')
+  if (reqUser.password !== reqUser.confirmpassword) errors.push('A jelszavaknak meg kell egyeznie.')
   // TODO: check eula
   // if (reqUser.eula != true || reqUser.correctAge != true) errors.push("Az oldal használatához a szabályzatot és az adatvédelmi szabályzatot is el kell fogadni.");
 
-  if(errors.length !== 0) {
+  if (errors.length !== 0) {
     return res.status(200).send({
       error: errors
     })
@@ -59,7 +58,7 @@ router.post("/reg", function (req, res) {
     User.findOne({ email: reqUser.email }, function (err, user) {
       // if there are any errors, return the error
       if (err) {
-        throw err;
+        throw err
       }
 
       // check to see if theres already a user with that email
@@ -67,154 +66,154 @@ router.post("/reg", function (req, res) {
         if (user.isEmailVerified === false) {
           return res.status(200).send({
             succesMessage:
-              ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet"]
-          });
+              ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet']
+          })
         }
 
         // ==========================================
         // TODO ha ide eljut akkor be kell léptetni
         // ===========================================
       } else {
-
         // TODO: ha van user és az email címe katív akkor belogineltetni.
 
-        delete reqUser.confirmpassword;
-        var newUserObject = new User(reqUser);
-        console.log(newUserObject);
-        newUserObject.password = newUserObject.generateHash(reqUser.password);
+        delete reqUser.confirmpassword
+        var newUserObject = new User(reqUser)
+        console.log(newUserObject)
+        newUserObject.password = newUserObject.generateHash(reqUser.password)
 
-        var date = new Date();
-        date.setHours(date.getHours() + 1);
-        newUserObject.registered = date;
+        var date = new Date()
+        date.setHours(date.getHours() + 1)
+        newUserObject.registered = date
 
-        newUserObject.isEmailVerified = false;
+        newUserObject.isEmailVerified = false
 
         let adminAccounts = ['csilla.varfoldi@wangaru-interactive.com',
-          'gabor.muranyi@wangaru-interactive.com'];
+          'gabor.muranyi@wangaru-interactive.com']
 
-        let isAdmin = adminAccounts.includes(newUserObject.email);
+        let isAdmin = adminAccounts.includes(newUserObject.email)
 
         if (isAdmin) {
-          newUserObject.roles = ["user", "admin"];
+          newUserObject.roles = ['user', 'admin']
         } else {
-          newUserObject.roles = ["user"];
+          newUserObject.roles = ['user']
         }
 
         newUserObject.emailVerificationToken = RandomString.generate({
           length: 64
-        });
+        })
 
         // save the user
         newUserObject.save(function (err) {
-          if (err) throw err;
+          if (err) throw err
 
           let mailOptions = {
             from: 'info@kornyezetrefel.hu',
             to: newUserObject.email,
             subject: 'Aktíváló email',
-            html: '<a href="https://www.kornyezetrefel.hu/validateemail/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
-          };
+            // html: '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+            html: '<a href="http://localhost:8080/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+          }
 
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-              console.log(error);
+              console.log(error)
             } else {
-              console.log('Email sent: ' + info.response);
+              console.log('Email sent: ' + info.response)
               res.status(200).send({
                 succesMessage:
-                  ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet."]
-              });
+                  ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet.']
+              })
             }
-          });
-        });
+          })
+        })
       }
-    });
-  });
-});
+    })
+  })
+})
 
-router.post("/login", function (req, res) {
-
-  console.log(req.body);
+router.post('/login', function (req, res) {
+  console.log(req.body)
   const loginData = req.body.user
-  console.log((loginData));
+  console.log((loginData))
 
   if (!loginData) {
-    return res.status(200).send({ error: ["Bejelentkezéshez add meg email címedet és jelszavad."] });
+    return res.status(200).send({ error: ['Bejelentkezéshez add meg email címedet és jelszavad.'] })
   }
-
 
   User.findOne({ email: loginData.email }, function (err, user) {
     if (err) {
       return res.status(200).send({
         error:
-          ["Nem megfelelő adatok."]
-      });
+          ['Nem megfelelő adatok.']
+      })
     }
 
     if (user) {
-      const passCrypt = bcrypt.compareSync(loginData.password, user.password);
+      const passCrypt = bcrypt.compareSync(loginData.password, user.password)
 
       if (!passCrypt) {
-        return res.status(200).send({ error: ["Nem megfelelő adatok."] });
+        return res.status(200).send({ error: ['Nem megfelelő adatok.'] })
       }
 
       if (user.isEmailVerified === false) {
         return res.status(200).send({
           info:
-            ["Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet."]
-        });
+            ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet.']
+        })
       }
 
-      let fullName = user.lastName + ' ' + user.firstName;
+      let fullName = user.lastName + ' ' + user.firstName
 
       let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
         expiresIn: 86400
-      });
-
-      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles });
-
+      })
+      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
     } else {
-      return res.status(200).send({ error: ["Hiba történt. Kérlek ellenőrizd a belépési adatokat."] });
+      return res.status(200).send({ error: ['Hiba történt. Kérlek ellenőrizd a belépési adatokat.'] })
     }
-  });
-});
+  })
+})
 
 router.get('/validateemail/:token', async (req, res) => {
+  console.log('back valiadate email', req.params.token)
   try {
-    let user = await User.findOne({ emailVerificationToken: req.params.token });
+    console.log('1')
+    let user = await User.findOne({ emailVerificationToken: req.params.token })
+    console.log(user)
+    console.log('2')
     if (user) {
-      user.isEmailVerified = true;
-      await user.save();
+      user.isEmailVerified = true
+      await user.save()
 
-      let fullName = user.lastName + ' ' + user.firstName;
+      let fullName = user.lastName + ' ' + user.firstName
 
       let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
         expiresIn: 86400
-      });
-
-
-      res.status(200).send({ auth: true, token: token, name: fullName });
+      })
+      res.status(200).send({ auth: true, token: token, name: fullName })
+    } else {
+      res.status(200).send({ auth: false })
     }
   } catch (err) {
-    throw err;
+    console.log(err)
+    throw err
   }
-});
+})
 
 router.post('/check', async (req, res) => {
-  if (!req.body.token) return;
+  if (!req.body.token) return
   try {
-    var decoded = jwt.verify(req.body.token, config.secret);
-    let user = await User.findById(decoded.id, null, {lean: true});
-    if(!user) return res.status(200).send({ error: true });
-  }
-  catch (err) {
-    return res.status(200).send({ error: true });
+    var decoded = jwt.verify(req.body.token, config.secret)
+    let user = await User.findById(decoded.id, null, { lean: true })
+    if (!user) return res.status(200).send({ error: true })
+  } catch (err) {
+    return res.status(200).send({ error: true })
   }
 
   if (decoded.name) {
-    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles });
+    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles })
   }
-  return res.status(200).send({ error: true });
-});
+  return res.status(200).send({ error: true })
+})
 
-module.exports = router;
+module.exports = router

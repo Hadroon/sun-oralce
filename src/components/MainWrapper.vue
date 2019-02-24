@@ -7,7 +7,7 @@
       <div class="headText">
 
         <h1>
-          Te mennyire vagy <span class="brown">környezettudatos</span>?
+          Te mennyire vagy <span class="brown">környezettudatos</span>? {{storeUser}}
         </h1>
 
         <h3>
@@ -35,13 +35,14 @@
       </div>
       <img class="separator" src="/images/grass.png" alt="">
     </div>
-    <auth-component 
+    <auth-component
     v-if="!authenticated.auth"
-    :user="user"
     :authenticated="authenticated" />
     <p v-if="authenticated.auth">{{user.name}}</p>
     <div id="third">
-      <form class="question" action="">
+      <survey-comp
+      v-if="authenticated.auth" />
+      <!-- <form class="question" action="">
         <h2>3 km-nél kisebb távolságra…</h2>
         <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
         <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
@@ -64,43 +65,45 @@
         <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
         <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
         <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
-      </form>
+      </form> -->
     </div>
   </div>
 </template>
 
 <script>
 import AuthComponent from '@/components/Authentication.vue'
+import SurveyComp from '@/components/SurveyComp.vue'
 
 export default {
   name: 'mainWrapper',
   components: {
-    AuthComponent
+    AuthComponent,
+    SurveyComp
   },
   created () {
-    const sunToken = localStorage.getItem('sunToken')
-    if (sunToken) this.checkUser(sunToken)
+    // const sunToken = localStorage.getItem('sunToken')
+    // if (!sunToken) this.checkUser(sunToken)
   },
   data () {
     return {
       authenticated: {
         auth: false,
-        roles: null
+        roles: null,
+        name: null
       },
-      user: {}
+      test: null
     }
   },
   methods: {
-    checkUser: async function() {
+    checkUser: async function(sunToken) {
       try {
         if (this.authenticated.auth) return
         let response = await this.$http.post("/check", {
-          token: localStorage.henkeltoken
+          token: sunToken
         });
         if (response.data.error) {
           this.authenticated.auth = false;
-          localStorage.removeItem('henkeltoken');
-          this.spinner.loading = false;
+          localStorage.removeItem('sunToken');
           return;
         }
         if (response.data.auth) {
@@ -116,6 +119,11 @@ export default {
         throw e;
       }
     },
+  },
+  computed: {
+    storeUser: function () {
+      return this.$store.getters.getUser.name
+    }
   }
 }
 </script>
