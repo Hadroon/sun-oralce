@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt-nodejs')
 // var ObjectId = require('mongoose').Types.ObjectId;
 const config = require('../config')
 
+const secret = process.env.SECRET || config.secret
 var User = require('../models/users')
 // var hostName = require('os').hostname()
 
@@ -161,7 +162,7 @@ router.post('/login', function (req, res) {
 
       let fullName = user.lastName + ' ' + user.firstName
 
-      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, secret, {
         expiresIn: 86400
       })
       res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
@@ -180,7 +181,7 @@ router.get('/validateemail/:token', async (req, res) => {
 
       let fullName = user.lastName + ' ' + user.firstName
 
-      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, secret, {
         expiresIn: 86400
       })
       res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
@@ -196,7 +197,7 @@ router.get('/validateemail/:token', async (req, res) => {
 router.get('/check/:token', async (req, res) => {
   let token = req.params.token
   try {
-    var decoded = jwt.verify(token, config.secret)
+    var decoded = jwt.verify(token, secret)
     let user = await User.findById(decoded.id, null, { lean: true })
     if (!user) return res.status(200).send({ auth: false })
   } catch (err) {
