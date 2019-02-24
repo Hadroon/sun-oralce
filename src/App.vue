@@ -6,12 +6,17 @@
 
 <script>
 export default {
+  name: 'App',
   created () {
     console.log('App created')
     const sunToken = localStorage.getItem('sunToken')
     const userName = this.$store.state.authenticated.name
     console.log(userName)
-    if (sunToken && !userName) this.$store.dispatch('checkUser')
+    console.log(sunToken)
+    if (sunToken && !userName) {
+      console.log('dispatch indul')
+      this.$store.dispatch('checkUser')
+    }
   }
 }
 </script>

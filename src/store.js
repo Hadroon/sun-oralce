@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,8 @@ export default new Vuex.Store({
     authenticated: {
       auth: false,
       roles: null,
-      name: null
+      name: null,
+      token: null
     }
   },
   getters: {
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setAuthenticated (state, playload) {
+      state.authenticated = playload
+    }
   },
   actions: {
     chackContext (context) {
@@ -33,9 +38,12 @@ export default new Vuex.Store({
       console.log(response.data)
       if (response.data.auth) {
         console.log('van user')
+        localStorage.setItem('sunToken', response.data.token)
+        context.commit('setAuthenticated', response.data)
       } else if (!response.data.auth) {
         console.log('nincs user')
       }
+      router.push({ name: 'main' })
       console.log('vege')
     }
   }

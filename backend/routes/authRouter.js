@@ -190,7 +190,7 @@ router.get('/validateemail/:token', async (req, res) => {
       let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
         expiresIn: 86400
       })
-      res.status(200).send({ auth: true, token: token, name: fullName })
+      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
     } else {
       res.status(200).send({ auth: false })
     }
