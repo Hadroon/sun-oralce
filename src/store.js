@@ -28,10 +28,7 @@ export default new Vuex.Store({
     chackContext (context) {
     },
     checkUser: async function (context, playload) {
-      console.log('chck')
-      console.log(playload)
       let response = await Axios.get('/check/' + playload)
-      console.log(response)
       if (response.data.auth) {
         context.commit('setAuthenticated', response.data)
       }

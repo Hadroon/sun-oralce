@@ -36,9 +36,7 @@
       <img class="separator" src="/images/grass.png" alt="">
     </div>
     <auth-component
-    v-if="!user.auth"
-    :authenticated="authenticated" />
-    <p v-if="authenticated.auth">{{user.name}}</p>
+    v-if="!user.auth" />
     <div id="third">
       <survey-comp
       v-if="user.auth" />
@@ -81,39 +79,12 @@ export default {
     SurveyComp
   },
   created () {
-    // const sunToken = localStorage.getItem('sunToken')
-    // if (!sunToken) this.checkUser(sunToken)
-    console.log('created')
   },
   data () {
     return {
     }
   },
   methods: {
-    checkUser: async function(sunToken) {
-      try {
-        if (this.authenticated.auth) return
-        let response = await this.$http.post("/check", {
-          token: sunToken
-        });
-        if (response.data.error) {
-          this.authenticated.auth = false;
-          localStorage.removeItem('sunToken');
-          return;
-        }
-        if (response.data.auth) {
-          this.authenticated.auth = response.data.auth;
-          this.authenticated.name = response.data.name;
-          if (response.data.roles.includes('admin')) {
-            this.authenticated.isAdmin = true;
-          }
-          return;
-        }
-      } catch (e) {
-        console.error(e);
-        throw e;
-      }
-    },
   },
   computed: {
     user: function () {
