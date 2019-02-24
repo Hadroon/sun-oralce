@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     authenticated: {
-      auth: false,
+      auth: null,
       roles: null,
       name: null,
       token: null
@@ -27,24 +27,24 @@ export default new Vuex.Store({
   actions: {
     chackContext (context) {
     },
-    checkUser: async function () {
+    checkUser: async function (context, playload) {
+      console.log('chck')
+      console.log(playload)
+      let response = await Axios.get('/check/' + playload)
+      console.log(response)
+      if (response.data.auth) {
+        context.commit('setAuthenticated', response.data)
+      }
     },
     validateEmilToken: async function (context, playload) {
-      console.log('validate email indul')
-      console.log(playload)
       let response = await Axios.get('/validateemail/' + playload.emailToken)
-      // let response = await Axios.get('/validateemail/jkhkhkh')
-      // console.log('eza res:', response)
-      console.log(response.data)
       if (response.data.auth) {
-        console.log('van user')
         localStorage.setItem('sunToken', response.data.token)
         context.commit('setAuthenticated', response.data)
       } else if (!response.data.auth) {
-        console.log('nincs user')
+        // TODO: handle if auth false
       }
       router.push({ name: 'main' })
-      console.log('vege')
     }
   }
 })

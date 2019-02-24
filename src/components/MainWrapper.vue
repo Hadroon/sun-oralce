@@ -7,7 +7,7 @@
       <div class="headText">
 
         <h1>
-          Te mennyire vagy <span class="brown">környezettudatos</span>? {{storeUser}}
+          Te mennyire vagy <span class="brown">környezettudatos</span>? {{user.name}}
         </h1>
 
         <h3>
@@ -36,12 +36,12 @@
       <img class="separator" src="/images/grass.png" alt="">
     </div>
     <auth-component
-    v-if="!authenticated.auth"
+    v-if="!user.auth"
     :authenticated="authenticated" />
     <p v-if="authenticated.auth">{{user.name}}</p>
     <div id="third">
       <survey-comp
-      v-if="authenticated.auth" />
+      v-if="user.auth" />
       <!-- <form class="question" action="">
         <h2>3 km-nél kisebb távolságra…</h2>
         <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
@@ -83,15 +83,10 @@ export default {
   created () {
     // const sunToken = localStorage.getItem('sunToken')
     // if (!sunToken) this.checkUser(sunToken)
+    console.log('created')
   },
   data () {
     return {
-      authenticated: {
-        auth: false,
-        roles: null,
-        name: null
-      },
-      test: null
     }
   },
   methods: {
@@ -121,8 +116,8 @@ export default {
     },
   },
   computed: {
-    storeUser: function () {
-      return this.$store.getters.getUser.name
+    user: function () {
+      return this.$store.getters.getUser
     }
   }
 }

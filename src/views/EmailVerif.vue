@@ -8,9 +8,6 @@
 export default {
   name: 'emailVerif',
   created () {
-    // this.validateEmilToken(this.$route.params.emailtoken)
-    console.log('verif created')
-    console.log('token: ', this.$route.params.emailtoken)
     this.$store.dispatch('validateEmilToken', { emailToken: this.$route.params.emailtoken })
   },
   methods: {

@@ -197,7 +197,6 @@ export default {
       }
     }
   },
-  props: ['user', 'authenticated'],
   methods: {
     pushError: function (error) {
       this.errors.push(error)
@@ -215,7 +214,7 @@ export default {
         this.pushError('A jelszónak legalább 6 karakter hosszúnak kell lennie.')
       }
 
-      // TODO: check adatvédelni too
+      // TODO: check adatvédelmi too
 
       if (this.errors.length !== 0) return
       this.newUser.phonenumber = this.newUser.phonenumber.replace(/-/g, '')
@@ -223,7 +222,7 @@ export default {
       this.submitStyle = 'loading'
       try {
         let response = await this.$http.post('/reg', { newUser: this.newUser })
-        console.log(response)
+        // console.log(response)
         if (response.data.succesMessage) {
           // TODO: what is succes?
           this.infos = response.data.succesMessage
@@ -238,7 +237,7 @@ export default {
         }
         return
       } catch (err) {
-        console.log(err)
+        // console.log(err)
       }
     },
     login: async function (e) {
@@ -255,9 +254,7 @@ export default {
         }
         if (response.data.auth) {
             localStorage.sunToken = response.data.token
-            this.authenticated.auth = response.data.auth
-            this.authenticated.name = response.data.name
-            this.user.name = response.data.name
+            this.$store.commit('setAuthenticated', response.data)
         }
       } catch (err) {
         console.log(err)

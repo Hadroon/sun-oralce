@@ -78,7 +78,6 @@ router.post('/reg', function (req, res) {
 
         delete reqUser.confirmpassword
         var newUserObject = new User(reqUser)
-        console.log(newUserObject)
         newUserObject.password = newUserObject.generateHash(reqUser.password)
 
         var date = new Date()
@@ -132,9 +131,7 @@ router.post('/reg', function (req, res) {
 })
 
 router.post('/login', function (req, res) {
-  console.log(req.body)
   const loginData = req.body.user
-  console.log((loginData))
 
   if (!loginData) {
     return res.status(200).send({ error: ['Bejelentkezéshez add meg email címedet és jelszavad.'] })
@@ -175,12 +172,8 @@ router.post('/login', function (req, res) {
 })
 
 router.get('/validateemail/:token', async (req, res) => {
-  console.log('back valiadate email', req.params.token)
   try {
-    console.log('1')
     let user = await User.findOne({ emailVerificationToken: req.params.token })
-    console.log(user)
-    console.log('2')
     if (user) {
       user.isEmailVerified = true
       await user.save()
@@ -200,20 +193,20 @@ router.get('/validateemail/:token', async (req, res) => {
   }
 })
 
-router.post('/check', async (req, res) => {
-  if (!req.body.token) return
+router.get('/check/:token', async (req, res) => {
+  let token = req.params.token
   try {
-    var decoded = jwt.verify(req.body.token, config.secret)
+    var decoded = jwt.verify(token, config.secret)
     let user = await User.findById(decoded.id, null, { lean: true })
-    if (!user) return res.status(200).send({ error: true })
+    if (!user) return res.status(200).send({ auth: false })
   } catch (err) {
-    return res.status(200).send({ error: true })
+    return res.status(200).send({ auth: false })
   }
 
   if (decoded.name) {
-    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles })
+    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles, token: token })
   }
-  return res.status(200).send({ error: true })
+  return res.status(200).send({ auth: false })
 })
 
 module.exports = router
