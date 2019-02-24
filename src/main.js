@@ -6,12 +6,12 @@ import Axios from 'axios'
 
 import VueMask from 'v-mask'
 
-// Vue.config.productionTip = false
-Vue.config.productionTip = true
+Vue.config.productionTip = false
+// Vue.config.productionTip = true
 Vue.prototype.$http = Axios
 
 Vue.use(VueMask)
-Vue.config.devtools = true
+// Vue.config.devtools = true
 
 const token = localStorage.getItem('sunToken')
 if (token) {

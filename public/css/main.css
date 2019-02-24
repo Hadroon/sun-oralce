@@ -64,7 +64,7 @@ fieldset {
   padding: 10px 10px 10px 200px;
   /* background: rgba(255, 255, 255, 0.9); */
   position: absolute;
-  bottom: 0px;
+  top: 0px;
   right: 0px;
   text-align: right;
   background-image: linear-gradient(
@@ -305,6 +305,22 @@ input[type="submit"] {
   padding-top: 5px;
   padding-bottom: 5px;
   background: #00C853;
+}
+
+.questionPic {
+  width: 100%;
+}
+
+#survey {
+  position: relative;
+}
+
+.content {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #ffffff;
+  padding: 10px;
 }
 
 @keyframes rotateAnimation {

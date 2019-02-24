@@ -3,7 +3,7 @@
     <div id="first">
       <img src="/images/head3.gif" alt="">
       <img class="spinner" src="/images/turbine.png" alt="">
-      <img class="logo" src="/images/logo.jpg" alt="">
+      <!-- <img class="logo" src="/images/logo.jpg" alt=""> -->
       <div class="headText">
 
         <h1>
