@@ -140,7 +140,7 @@
         <div class="formrow" style="text-align: center;">
           <input type="submit" :class="logSubmitStyle" value="Belépés">
         </div>
-        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Jelszó törlése</p>
+        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Elfelejtett jelszó</p>
       </form>
       <form action v-if="canShowForgotPassword && !resettoken" @submit="startForgotPassword" method="post">
         <div class="formrow">
@@ -154,7 +154,7 @@
         <div class="formrow" style="text-align: center;">
           <input type="submit" :class="logSubmitStyle" value="Jelszó törlése">
         </div>
-        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Bejelentkezés</p>
+        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Vissza a bejelentkezéshez</p>
       </form>
       <form action v-if="resettoken" @submit="resetpass" method="post">
         <div class="formrow">
