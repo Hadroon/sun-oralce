@@ -280,7 +280,7 @@ router.post('/resetpass', async (req, res) => {
 
       let fullName = user.lastName + ' ' + user.firstName;
 
-      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, secret, {
         expiresIn: 86400
       });
 
