@@ -36,34 +36,11 @@
       <img class="separator" src="/images/grass.png" alt="">
     </div>
     <auth-component
-    v-if="!user.auth" />
+    v-if="!user.auth"
+    :resettoken="resettoken" />
     <div id="third">
       <survey-comp
       v-if="user.auth" />
-      <!-- <form class="question" action="">
-        <h2>3 km-nél kisebb távolságra…</h2>
-        <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
-        <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
-        <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
-      </form>
-      <form class="question" action="">
-        <h2>3 km-nél kisebb távolságra…</h2>
-        <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
-        <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
-        <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
-      </form>
-      <form class="question" action="">
-        <h2>3 km-nél kisebb távolságra…</h2>
-        <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
-        <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
-        <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
-      </form>
-      <form class="question" action="">
-        <h2>3 km-nél kisebb távolságra…</h2>
-        <input type="radio" name="gender" value="male"> Autóba pattanok, gyorsabb így.<br>
-        <input type="radio" name="gender" value="female"> Tömegközlekedem, úgyis jön valami.<br>
-        <input type="radio" name="gender" value="other"> Gyalogolok vagy bringázom.
-      </form> -->
     </div>
   </div>
 </template>
@@ -79,9 +56,13 @@ export default {
     SurveyComp
   },
   created () {
+    if (this.$route.name === 'reset' && this.$route.params.resettoken) {
+      this.resettoken = this.$route.params.resettoken
+    }
   },
   data () {
     return {
+      resettoken: null
     }
   },
   methods: {

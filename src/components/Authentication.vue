@@ -105,7 +105,7 @@
             </label>
           </div>
           <div class="formrow" style="text-align: center;">
-            <input type="submit" :class="submitStyle" value="Regisztrálok">
+            <input type="submit" :class="regSubmitStyle" value="Regisztrálok">
           </div>
         </fieldset>
       </form>
@@ -122,7 +122,7 @@
           <li v-for="info in loginInfos" :key="info.id">{{ info }}</li>
         </ul>
       </p>
-      <form action @submit="login" method="post">
+      <form action v-if="!canShowForgotPassword && !resettoken" @submit="login" method="post">
         <div class="formrow">
           <div class="float-20" style="width: 90px;">
             <span class="form-label">Email cím:</span>
@@ -137,8 +137,44 @@
             <input size type="password" class="authInput" v-model="userLoginData.password" name="password" required>
           </div>
         </div>
+        <div class="formrow" style="text-align: center;">
+          <input type="submit" :class="logSubmitStyle" value="Belépés">
+        </div>
+        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Jelszó törlése</p>
+      </form>
+      <form action v-if="canShowForgotPassword && !resettoken" @submit="startForgotPassword" method="post">
         <div class="formrow">
-          <input type="submit" :class="submitStyle" value="Belépés">
+          <div class="float-20" style="width: 90px;">
+            <span class="form-label">Email cím:</span>
+          </div>
+          <div class="float-30" style="width: 490px;">
+            <input size type="email" class="authInput" v-model="userLoginData.email" name="email" required>
+          </div>
+        </div>
+        <div class="formrow" style="text-align: center;">
+          <input type="submit" :class="logSubmitStyle" value="Jelszó törlése">
+        </div>
+        <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Bejelentkezés</p>
+      </form>
+      <form action v-if="resettoken" @submit="resetpass" method="post">
+        <div class="formrow">
+          <div class="float-20" style="width: 180px;">
+            <span class="form-label">Jelszó:</span>
+          </div>
+          <div class="float-30" style="width: 400px;">
+            <input size type="password" class="authInput" v-model="userLoginData.password" name="email" required>
+          </div>
+        </div>
+        <div class="formrow">
+          <div class="float-20" style="width: 180px;">
+            <span class="form-label">Jelszó megerősítése:</span>
+          </div>
+          <div class="float-30" style="width: 400px;">
+            <input size type="password" class="authInput" v-model="userLoginData.passwordTwo" name="password" required>
+          </div>
+        </div>
+        <div class="formrow" style="text-align: center;">
+          <input type="submit" :class="logSubmitStyle" value="Jelszó megváltoztatása">
         </div>
       </form>
       <div>
@@ -168,6 +204,7 @@
 <script>
 export default {
   name: 'AuthComponent',
+  props: ['resettoken'],
   data () {
     return {
       errors: [],
@@ -175,7 +212,9 @@ export default {
       loginErrors: [],
       loginInfos: [],
       formDisabled: false,
-      submitStyle: 'beforeLoading',
+      regSubmitStyle: 'beforeLoading',
+      logSubmitStyle: 'beforeLoading',
+      canShowForgotPassword: false,
       newUser: {
         lastName: null,
         firstName: null,
@@ -193,7 +232,8 @@ export default {
       },
       userLoginData: {
         email: null,
-        password: null
+        password: null,
+        passwordTwo: null
       }
     }
   },
@@ -205,6 +245,7 @@ export default {
       e.preventDefault()
 
       this.errors = []
+      this.infos = []
 
       if (Number(this.newUser.bornYear) < 1900) this.pushError('Kérlek ellenőrizd a születési éved')
       if (Number(this.newUser.bornYear) > 2000) this.pushError('Az oldal használatához legalább 18 évesnek kell lenned.')
@@ -219,7 +260,7 @@ export default {
       if (this.errors.length !== 0) return
       this.newUser.phonenumber = this.newUser.phonenumber.replace(/-/g, '')
       this.formDisabled = true
-      this.submitStyle = 'loading'
+      this.regSubmitStyle = 'loading'
       try {
         let response = await this.$http.post('/reg', { newUser: this.newUser })
         // console.log(response)
@@ -243,16 +284,21 @@ export default {
     login: async function (e) {
       e.preventDefault()
       this.loginErrors = []
+      this.loginInfos = []
+      if (!this.userLoginData.email || !this.userLoginData.password) return
+      this.logSubmitStyle = 'loading'
 
       try {
         let response = await this.$http.post('/login', { user: this.userLoginData })
         if(response.data.error) {
+          this.logSubmitStyle = 'beforeLoading'
           return this.loginErrors = response.data.error
         }
         if(response.data.info) {
           return this.loginInfos = response.data.info
         }
         if (response.data.auth) {
+            this.logSubmitStyle = 'beforeLoading'
             localStorage.sunToken = response.data.token
             this.$store.commit('setAuthenticated', response.data)
         }
@@ -260,23 +306,46 @@ export default {
         console.log(err)
       }
     },
-    handleSubmit: async function (e) {
+    startForgotPassword: async function (e) {
       e.preventDefault()
-      this.spinner.loading = true
-      this.error = null
+
+      this.logSubmitStyle = 'loading'
       try {
-        let response = await this.$http.post('/reg', { user: this.user })
-        if (response.data.succesMessage) {
-          this.succesMessage = response.data.succesMessage
-          this.spinner.loading = false
-          return
-        } else if (response.data.error) {
-          this.error = response.data.error
-          this.spinner.loading = false
-          return
+        let response = await this.$http.post('/resetback', {
+          email: this.userLoginData.email
+        })
+        console.log(response)
+        if (response.data.error) {
+          this.loginErrors = response.data.error
+        }
+        if (response.data.info) {
+          this.loginInfos = response.data.info
         }
       } catch (err) {
-        this.spinner.loading = false
+        console.log(err)
+      }
+      this.logSubmitStyle = 'beforeLoading'
+    },
+    resetpass: async function (e) {
+      e.preventDefault()
+
+      this.logSubmitStyle = 'loading'
+      try {
+        let response = await this.$http.post('/resetpass', {
+          passone: this.userLoginData.password,
+          passtwo: this.userLoginData.passwordTwo,
+          token: this.resettoken
+        })
+        if (response.data.error) {
+          this.loginErrors = response.data.error
+        }
+        if (response.data.auth) {
+          // this.resettoken = null
+          this.logSubmitStyle = 'beforeLoading'
+          localStorage.sunToken = response.data.token
+          this.$store.commit('setAuthenticated', response.data)
+        }
+      } catch (err) {
         console.log(err)
       }
     }

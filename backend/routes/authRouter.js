@@ -99,7 +99,8 @@ router.post('/reg', function (req, res) {
         }
 
         newUserObject.emailVerificationToken = RandomString.generate({
-          length: 64
+          length: 64,
+          charset: 'alphanumeric'
         })
 
         // save the user
@@ -209,5 +210,85 @@ router.get('/check/:token', async (req, res) => {
   }
   return res.status(200).send({ auth: false })
 })
+
+router.post('/resetback', async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    user.passwordToken = RandomString.generate({
+      length: 64,
+      charset: 'alphanumeric'
+    });
+
+    if(user && user.isEmailVerified) {
+      await user.save();
+
+      let mailOptions = {
+        from: 'info@kornyezetrefel.hu',
+        to: user.email,
+        subject: 'Jelszó megváltoztatása',
+        html: '<a href="https://www.kornyezetrefel.hu/reset/' + user.passwordToken + '" class="btn btn-default">Jelszócseréhez kérlek kattints ide.</a>'
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+          res.status(200).send({
+            error:
+              ["Hiba történt, a megadott email címre nem tudtunk levelet küldeni."]
+          });
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.status(200).send({
+            info:
+              ["Email címedre emailt küldtünk, hogy meg tud változtatni a jelszavad."]
+          });
+        }
+      });
+    } else {
+      res.status(200).send({
+        error:
+          ["Kérjük ellenőrizd a megadott emailcímet vagy aktíváld."]
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(200).send({
+      error:
+        ["Hiba történt"]
+    });
+  }
+});
+
+router.post('/resetpass', async (req, res) => {
+
+  if (req.body.passone.length < 6 || req.body.passtwo.length < 6) {
+    return res.status(200).send({
+      error: ["A jelszónak legalább 6 karakter hosszúnak kell lennie."]
+    });
+  }
+
+  if (req.body.passOne !== req.body.passTwo) {
+    return res.status(200).send({ error: ["A jelszavaknak meg kell egyeznie."] });
+  }
+
+  try {
+    let user = await User.findOne({ passwordToken: req.body.token });
+    if (user && user.isEmailVerified) {
+
+      user.password = user.generateHash(req.body.passone);
+      await user.save();
+
+      let fullName = user.lastName + ' ' + user.firstName;
+
+      let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, config.secret, {
+        expiresIn: 86400
+      });
+
+      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles });
+    }
+  } catch (err) {
+    throw err;
+  }
+});
 
 module.exports = router

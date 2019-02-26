@@ -17,6 +17,11 @@ export default new Router({
       path: '/verif/:emailtoken',
       name: 'emailVerif',
       component: emailVerif
+    },
+    {
+      path: '/reset/:resettoken',
+      name: 'reset',
+      component: Main
     }
   ]
 })
