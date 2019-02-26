@@ -321,6 +321,7 @@ export default {
         if (response.data.info) {
           this.loginInfos = response.data.info
         }
+        this.logSubmitStyle = 'beforeLoading'
       } catch (err) {
         console.log(err)
       }
@@ -332,12 +333,13 @@ export default {
       this.logSubmitStyle = 'loading'
       try {
         let response = await this.$http.post('/resetpass', {
-          passone: this.userLoginData.password,
-          passtwo: this.userLoginData.passwordTwo,
+          passOne: this.userLoginData.password,
+          passTwo: this.userLoginData.passwordTwo,
           token: this.resettoken
         })
         if (response.data.error) {
           this.loginErrors = response.data.error
+          this.logSubmitStyle = 'beforeLoading'
         }
         if (response.data.auth) {
           // this.resettoken = null

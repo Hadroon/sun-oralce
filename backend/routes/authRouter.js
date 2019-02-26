@@ -261,7 +261,7 @@ router.post('/resetback', async (req, res) => {
 
 router.post('/resetpass', async (req, res) => {
 
-  if (req.body.passone.length < 6 || req.body.passtwo.length < 6) {
+  if (req.body.passOne.length < 6 || req.body.passTwo.length < 6) {
     return res.status(200).send({
       error: ["A jelszónak legalább 6 karakter hosszúnak kell lennie."]
     });
@@ -275,7 +275,7 @@ router.post('/resetpass', async (req, res) => {
     let user = await User.findOne({ passwordToken: req.body.token });
     if (user && user.isEmailVerified) {
 
-      user.password = user.generateHash(req.body.passone);
+      user.password = user.generateHash(req.body.passOne);
       await user.save();
 
       let fullName = user.lastName + ' ' + user.firstName;
@@ -285,8 +285,15 @@ router.post('/resetpass', async (req, res) => {
       });
 
       res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles });
+    } else {
+      res.status(200).send({
+        error:
+          ["Hiba történt."]
+      });
+
     }
   } catch (err) {
+    console.log(err);
     throw err;
   }
 });
