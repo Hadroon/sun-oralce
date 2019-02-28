@@ -110,7 +110,7 @@ router.post('/reg', function (req, res) {
         newUserObject.save(function (err) {
           if (err) throw err
 
-          const link = 'https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken
+          const link = 'https://' + req.hostname + '/verif/' + newUserObject.emailVerificationToken
 
           let emailTemplate = activationEmailTemplate(newUserObject.firstName, link)
 
@@ -119,8 +119,6 @@ router.post('/reg', function (req, res) {
             to: newUserObject.email,
             subject: 'Környezetre fel regisztráció aktiválása',
             html: emailTemplate
-            // '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
-            // html: '<a href="http://localhost:8080/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
           }
 
           transporter.sendMail(mailOptions, function (error, info) {

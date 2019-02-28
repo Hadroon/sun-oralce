@@ -268,12 +268,12 @@ export default {
           // TODO: what is succes?
           this.infos = response.data.succesMessage
           this.formDisabled = false
-          this.submitStyle = 'beforeLoading'
+          this.regSubmitStyle = 'beforeLoading'
           return
         } else if (response.data.error) {
           this.errors = response.data.error
           this.formDisabled = false
-          this.submitStyle = 'beforeLoading'
+          this.regSubmitStyle = 'beforeLoading'
           return
         }
         return

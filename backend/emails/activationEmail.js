@@ -14,14 +14,14 @@ const activationEmailTemplate = function (firstName, link) {
     <body style="font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;">
         <div style="width: 100%; background: #dddddd; padding-top: 20px;">
             <div style="width: 100%; max-width: 600px; background: #ffffff; margin: 0 auto 0 auto; padding: 20px;">
-                <h1>Kedves ${firstName}!</h1>
+                <h1 style="color: #0079c1;">Kedves ${firstName}!</h1>
                 <p>Köszönjük, hogy regisztráltál.</p>
     
-                <p>Kérjük, aktiváld az email címedet az alábbi linkre való kattintással: <a href="${link}">aktivalo link</a></p>
+                <p>Kérjük, aktiváld az email címedet az alábbi linkre való kattintással: <a style="text-decoration: none; color: #0079c1; font-weight: bold;" href="${link}">aktivaló link</a></p>
                 <p>Válaszolj pár kérdésünkre és tudd meg, hogyan tehetsz többet a környezetedért!
                 Ráadásul most még nyerhetsz is vele.</p>
     
-                <h2>Sok sikert kívánunk!</h2>
+                <h2 style="color: #0079c1;">Sok sikert kívánunk!</h2>
                 Környezetre Fel! Csapata
     
             </div>
