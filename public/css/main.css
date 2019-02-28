@@ -30,6 +30,10 @@ fieldset {
   /* max-height: 300px; */
 }
 
+.headpic {
+  width: 100%;
+}
+
 .green {
   color: #1B5E20;
 }

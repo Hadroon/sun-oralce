@@ -11,7 +11,7 @@ const activationEmailTemplate = function (firstName, link) {
         <title>Document</title>
     </head>
     
-    <body style="font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;">
+    <body style="font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif; color: #222;">
         <div style="width: 100%; background: #dddddd; padding-top: 20px;">
             <div style="width: 100%; max-width: 600px; background: #ffffff; margin: 0 auto 0 auto; padding: 20px;">
                 <h1 style="color: #0079c1;">Kedves ${firstName}!</h1>
