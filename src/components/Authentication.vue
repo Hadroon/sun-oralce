@@ -247,7 +247,7 @@ export default {
       this.errors = []
       this.infos = []
 
-      if (Number(this.newUser.bornYear) < 1900) this.pushError('Kérlek ellenőrizd a születési éved')
+      if (Number(this.newUser.bornYear) < 1900) this.pushError('Kérlek, ellenőrizd a születési éved!')
       if (Number(this.newUser.bornYear) > 2000) this.pushError('Az oldal használatához legalább 18 évesnek kell lenned.')
       if (this.newUser.password.localeCompare(this.newUser.confirmpassword)) this.pushError('A két jelszónak meg kell egyeznie.')
       if (this.newUser.password.length < 7 ||

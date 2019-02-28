@@ -1,15 +1,15 @@
-var express = require('express')
-var router = express.Router()
-var nodemailer = require('nodemailer')
-var RandomString = require('randomstring')
+const express = require('express')
+const router = express.Router()
+const nodemailer = require('nodemailer')
+const RandomString = require('randomstring')
 const jwt = require('jsonwebtoken')
-var bcrypt = require('bcrypt-nodejs')
+const bcrypt = require('bcrypt-nodejs')
 // var ObjectId = require('mongoose').Types.ObjectId;
 const config = require('../config')
 
 const secret = process.env.SECRET || config.secret
-var User = require('../models/users')
-// var hostName = require('os').hostname()
+const User = require('../models/users')
+var activationEmailTemplate = require('../emails/activationEmail')
 
 const transporter = nodemailer.createTransport({
   host: 'cl05.webspacecontrol.com',
@@ -25,6 +25,11 @@ const transporter = nodemailer.createTransport({
 })
 
 router.post('/reg', function (req, res) {
+  console.log('========================================================')
+  console.log(req.hostname);
+  console.log(req.url);
+  console.log(req.originalUrl);
+  console.log('========================================================')
   if (!req.body.newUser) return res.status(500)
   const reqUser = req.body.newUser
   let errors = []
@@ -34,7 +39,7 @@ router.post('/reg', function (req, res) {
     reqUser.zip.length < 4 ||
     reqUser.phonenumber.length !== 7
   ) {
-    errors.push('Kérlek ellenőrizd a megadott adatokat.')
+    errors.push('Kérlek, ellenőrizd a megadott adatokat.')
   }
   var regexPatt = new RegExp(
     "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
@@ -62,21 +67,19 @@ router.post('/reg', function (req, res) {
         throw err
       }
 
-      // check to see if theres already a user with that email
       if (user) {
         if (user.isEmailVerified === false) {
           return res.status(200).send({
             succesMessage:
               ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet']
           })
+        } else if (user.isEmailVerified === true) {
+          return res.status(200).send({
+            succesMessage:
+              ['Ezzel az email címmel vár van aktív regisztráció. Kérlek jelentkez be.']
+          })
         }
-
-        // ==========================================
-        // TODO ha ide eljut akkor be kell léptetni
-        // ===========================================
       } else {
-        // TODO: ha van user és az email címe katív akkor belogineltetni.
-
         delete reqUser.confirmpassword
         var newUserObject = new User(reqUser)
         newUserObject.password = newUserObject.generateHash(reqUser.password)
@@ -107,11 +110,16 @@ router.post('/reg', function (req, res) {
         newUserObject.save(function (err) {
           if (err) throw err
 
+          const link = 'https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken
+
+          let emailTemplate = activationEmailTemplate(newUserObject.firstName, link)
+
           let mailOptions = {
             from: 'info@kornyezetrefel.hu',
             to: newUserObject.email,
-            subject: 'Aktíváló email',
-            html: '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
+            subject: 'Környezetre fel regisztráció aktiválása',
+            html: emailTemplate
+            // '<a href="https://www.kornyezetrefel.hu/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
             // html: '<a href="http://localhost:8080/verif/' + newUserObject.emailVerificationToken + '" class="btn btn-default">Akíváláshoz kérlek kattints ide.</a>'
           }
 
@@ -122,7 +130,7 @@ router.post('/reg', function (req, res) {
               console.log('Email sent: ' + info.response)
               res.status(200).send({
                 succesMessage:
-                  ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet.']
+                  ['Erre az email címre már elküldtük az aktíváló emailt. Kérlek, kattints az emailben található aktiváló linkre.']
               })
             }
           })
@@ -157,7 +165,7 @@ router.post('/login', function (req, res) {
       if (user.isEmailVerified === false) {
         return res.status(200).send({
           info:
-            ['Email címedre már aktíváló emailt küldtünk. Kérünk aktíváld az email címedet.']
+            ['Erre az email címre már elküldtük az aktíváló emailt. Kérlek, kattints az emailben található aktiváló linkre.']
         })
       }
 
@@ -168,7 +176,7 @@ router.post('/login', function (req, res) {
       })
       res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
     } else {
-      return res.status(200).send({ error: ['Hiba történt. Kérlek ellenőrizd a belépési adatokat.'] })
+      return res.status(200).send({ error: ['Hiba történt. Kérlek, ellenőrizd a belépési adatokat.'] })
     }
   })
 })
