@@ -20,26 +20,50 @@ fieldset {
   border: 0px;
 }
 
+p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
 #first {
   position: relative;
 }
 
 #second {
   position: relative;
-  background: #0288D1;
+  color: #ffffff;
+  background: #6D4C41;
+  /* padding: 50px; */
   /* max-height: 300px; */
+}
+
+.secondLeft {
+  background: #008b00;
 }
 
 .headpic {
   width: 100%;
 }
 
+.secondHead {
+  padding: 112px 20px 0px 20px;
+  margin-top: 0px;
+}
+
 .green {
   color: #1B5E20;
 }
 
+.red {
+  color: #bd4545;
+}
+
 .brown {
   color: #6D4C41;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .separator {
@@ -65,17 +89,20 @@ fieldset {
 }
 
 .headText {
-  padding: 10px 10px 10px 200px;
-  /* background: rgba(255, 255, 255, 0.9); */
+  padding: 20px 20px 20px 20px;
+  background: rgba(255, 255, 255, 1);
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 175px;
+  right: 100px;
   text-align: right;
-  background-image: linear-gradient(
+  width: 350px;
+  z-index: 100;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  /* background-image: linear-gradient(
     to left,
     white 78%,
     transparent 100%
-  );
+  ); */
 }
 
 .logo {
@@ -88,15 +115,25 @@ fieldset {
 
 .price {
   box-sizing: border-box;
-  float: left;
-  width: 33%;
+  /* float: left; */
+  width: 100%;
   color: white;
   text-align: center;
   padding: 20px;
+  position: relative;
 }
 
-.price img {
+/* .price img {
   width: 100%;
+} */
+
+.mediaLogo {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  top: 150px;
+  width: 31%;
 }
 
 .question {
@@ -159,13 +196,14 @@ fieldset {
 
 .auth {
   color: white;
+  background: #01579B;
 }
 
 .reg {
-  width: 50%;
+  width: 100%;
   padding: 10px;
   box-sizing: border-box;
-  float: left;
+  /* float: left; */
 }
 
 .authInput {
@@ -320,11 +358,42 @@ input[type="submit"] {
 }
 
 .content {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  /* position: absolute; */
+  /* top: 20px; */
+  /* left: 20px; */
   background: #ffffff;
   padding: 10px;
+}
+
+.answerButton {
+  background: #00C853;
+  padding: 10px;
+  border: none;
+  margin-right: 10px;
+  color: #ffffff;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.footer {
+  background: #6D4C41;
+  padding: 10px;
+  /* width: 50%; */
+  /* float: left; */
+  height: 262px;
+}
+
+.sup {
+  position: relative;
+  bottom: 1ex; 
+  font-size: 50%;
+}
+
+.inter {
+  font-size: 20px;
+  font-style: italic;
 }
 
 .pLink {

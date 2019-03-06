@@ -2,15 +2,22 @@
   <div id="survey">
     <!-- {{question.question}} -->
     <!-- {{question.img}} -->
-    <img class="questionPic" :src="'/images/' + question.img" alt="">
     <div class="content">
-      <h2>
+      <h2 class="brown">
         {{question.question}} ({{currentQuestionIndex + 1}}/{{surveyLength}})
       </h2>
-      <button @click="vote(answerindex)" v-for="(answer, answerindex) in question.answers" :key="answer">
+      <button class="answerButton" @click="vote(answerindex)" v-for="(answer, answerindex) in question.answers" :key="answer">
         {{answer}}
       </button>
     </div>
+    <img class="questionPic" :src="'/images/' + question.img" alt="">
+            <div class="footer">
+          <h1><span>WANGRU</span> <span class="inter">interactive</span>  <span class="sup"> ®</span></h1>
+          <p>Cím:</p>
+          <p>email:</p>
+          <p>Adatvédelmi:</p>
+          <p>bla bla bla</p>
+        </div>
   </div>
 </template>
 

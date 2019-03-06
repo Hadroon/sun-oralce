@@ -123,7 +123,7 @@
         </ul>
       </p>
       <form action v-if="!canShowForgotPassword && !resettoken" @submit="login" method="post">
-        <div class="formrow">
+        <div class="">
           <div class="float-20" style="width: 90px;">
             <span class="form-label">Email cím:</span>
           </div>
@@ -137,8 +137,8 @@
             <input size type="password" class="authInput" v-model="userLoginData.password" name="password" required>
           </div>
         </div>
-        <div class="formrow" style="text-align: center;">
-          <input type="submit" :class="logSubmitStyle" value="Belépés">
+        <div class="" style="text-align: center;">
+          <input type="submit" :class="logSubmitStyle" value="Belépés" style="margin-top: 20px;">
         </div>
         <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Elfelejtett jelszó</p>
       </form>
@@ -156,27 +156,29 @@
         </div>
         <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Vissza a bejelentkezéshez</p>
       </form>
-      <form action v-if="resettoken" @submit="resetpass" method="post">
-        <div class="formrow">
-          <div class="float-20" style="width: 180px;">
-            <span class="form-label">Jelszó:</span>
-          </div>
-          <div class="float-30" style="width: 400px;">
-            <input size type="password" class="authInput" v-model="userLoginData.password" name="email" required>
-          </div>
+        <div>    
+          <form action v-if="resettoken" @submit="resetpass" method="post">
+            <div class="formrow">
+              <div class="float-20" style="width: 180px;">
+                <span class="form-label">Jelszó:</span>
+              </div>
+              <div class="float-30" style="width: 400px;">
+                <input size type="password" class="authInput" v-model="userLoginData.password" name="email" required>
+              </div>
+            </div>
+            <div class="formrow">
+              <div class="float-20" style="width: 180px;">
+                <span class="form-label">Jelszó megerősítése:</span>
+              </div>
+              <div class="float-30" style="width: 400px;">
+                <input size type="password" class="authInput" v-model="userLoginData.passwordTwo" name="password" required>
+              </div>
+            </div>
+            <div class="formrow" style="text-align: center;">
+              <input type="submit" :class="logSubmitStyle" value="Jelszó megváltoztatása">
+            </div>
+          </form>
         </div>
-        <div class="formrow">
-          <div class="float-20" style="width: 180px;">
-            <span class="form-label">Jelszó megerősítése:</span>
-          </div>
-          <div class="float-30" style="width: 400px;">
-            <input size type="password" class="authInput" v-model="userLoginData.passwordTwo" name="password" required>
-          </div>
-        </div>
-        <div class="formrow" style="text-align: center;">
-          <input type="submit" :class="logSubmitStyle" value="Jelszó megváltoztatása">
-        </div>
-      </form>
       <div>
         <h2>Jelentkez be velük</h2>
         <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
@@ -198,6 +200,13 @@
       }
     </script> -->
     </div>
+            <div class="footer">
+          <h1><span>WANGRU</span> <span class="inter">interactive</span>  <span class="sup"> ®</span></h1>
+          <p>Cím:</p>
+          <p>email:</p>
+          <p>Adatvédelmi:</p>
+          <p>bla bla bla</p>
+        </div>
   </div>
 </template>
 
