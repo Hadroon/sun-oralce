@@ -27,14 +27,14 @@ p {
 
 #first {
   position: relative;
+  grid-area: header;
 }
 
 #second {
   position: relative;
   color: #ffffff;
-  background: #6D4C41;
-  /* padding: 50px; */
-  /* max-height: 300px; */
+  background: #008b00;
+  grid-area: price;
 }
 
 .secondLeft {
@@ -77,6 +77,12 @@ p {
     width: 1200px;
     margin: 0 auto;
     position: relative;
+    display: grid;
+    grid-template-areas:"header header"
+                        "logic price"
+                        "footer price";
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-columns: 1fr 1fr;
 }
 
 .spinner {
@@ -175,7 +181,7 @@ p {
   margin-top: 6px;
 }
 
-.formrow:after, .auth:after {
+.formrow:after {
   content: "";
   display: table;
   clear: both;
@@ -197,13 +203,19 @@ p {
 .auth {
   color: white;
   background: #01579B;
+  grid-area: logic;
 }
 
 .reg {
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-  /* float: left; */
+}
+
+.login {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .authInput {
@@ -380,9 +392,7 @@ input[type="submit"] {
 .footer {
   background: #6D4C41;
   padding: 10px;
-  /* width: 50%; */
-  /* float: left; */
-  height: 262px;
+  grid-area: footer;
 }
 
 .sup {

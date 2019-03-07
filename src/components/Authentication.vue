@@ -110,7 +110,7 @@
         </fieldset>
       </form>
     </div>
-    <div class="reg">
+    <div class="login">
       <h2>Belépés</h2>
       <p v-if="loginErrors.length">
         <ul class="errorFormat">
@@ -200,13 +200,6 @@
       }
     </script> -->
     </div>
-            <div class="footer">
-          <h1><span>WANGRU</span> <span class="inter">interactive</span>  <span class="sup"> ®</span></h1>
-          <p>Cím:</p>
-          <p>email:</p>
-          <p>Adatvédelmi:</p>
-          <p>bla bla bla</p>
-        </div>
   </div>
 </template>
 

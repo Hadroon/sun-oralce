@@ -1,5 +1,5 @@
 <template>
-  <div id="survey">
+  <div id="survey" class="auth">
     <!-- {{question.question}} -->
     <!-- {{question.img}} -->
     <div class="content">
@@ -11,13 +11,6 @@
       </button>
     </div>
     <img class="questionPic" :src="'/images/' + question.img" alt="">
-            <div class="footer">
-          <h1><span>WANGRU</span> <span class="inter">interactive</span>  <span class="sup"> ®</span></h1>
-          <p>Cím:</p>
-          <p>email:</p>
-          <p>Adatvédelmi:</p>
-          <p>bla bla bla</p>
-        </div>
   </div>
 </template>
 
