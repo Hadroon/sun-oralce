@@ -10,6 +10,7 @@ const config = require('../config')
 const secret = process.env.SECRET || config.secret
 const User = require('../models/users')
 var activationEmailTemplate = require('../emails/activationEmail')
+var passwordResetEmailTemplate = require('../emails/resetPasswordEmail')
 
 const transporter = nodemailer.createTransport({
   host: 'cl05.webspacecontrol.com',
@@ -110,7 +111,7 @@ router.post('/reg', function (req, res) {
         newUserObject.save(function (err) {
           if (err) throw err
 
-          const link = 'https://' + req.hostname + '/verif/' + newUserObject.emailVerificationToken
+          let link = 'https://' + req.hostname + '/verif/' + newUserObject.emailVerificationToken
 
           let emailTemplate = activationEmailTemplate(newUserObject.firstName, link)
 
@@ -228,11 +229,15 @@ router.post('/resetback', async (req, res) => {
     if(user && user.isEmailVerified) {
       await user.save();
 
+      let link = 'https://' + req.hostname + '/reset/' + user.passwordToken
+
+      let emailTemplate = passwordResetEmailTemplate(user.firstName, link)
+
       let mailOptions = {
         from: 'info@kornyezetrefel.hu',
         to: user.email,
         subject: 'Jelszó megváltoztatása',
-        html: '<a href="https://www.kornyezetrefel.hu/reset/' + user.passwordToken + '" class="btn btn-default">Jelszócseréhez kérlek kattints ide.</a>'
+        html: emailTemplate
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
