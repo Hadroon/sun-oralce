@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     authenticated: {
-      auth: true,
+      auth: null,
       roles: null,
       name: null,
       token: null
