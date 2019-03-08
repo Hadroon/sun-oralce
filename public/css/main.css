@@ -1,0 +1,419 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+    background: #01579B;
+    margin: 0px;
+    font-family: 'Montserrat', sans-serif;
+    color: #008b00;
+}
+
+img {
+  display: block;
+}
+
+fieldset {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+
+p {
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
+#first {
+  position: relative;
+  grid-area: header;
+}
+
+#second {
+  position: relative;
+  color: #ffffff;
+  background: #008b00;
+  grid-area: price;
+}
+
+.secondLeft {
+  background: #008b00;
+}
+
+.headpic {
+  width: 100%;
+}
+
+.secondHead {
+  padding: 112px 20px 0px 20px;
+  margin-top: 0px;
+}
+
+.green {
+  color: #1B5E20;
+}
+
+.red {
+  color: #bd4545;
+}
+
+.brown {
+  color: #6D4C41;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.separator {
+  position: relative;
+  bottom: -1px;
+  width: 100%;
+  height: 100px;
+}
+
+.mainWrapper {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    display: grid;
+    grid-template-areas:"header header"
+                        "logic price"
+                        "footer price";
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.spinner {
+    position: absolute;
+    top: 8px;
+    left: 42px;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 8s linear infinite;
+}
+
+.headText {
+  padding: 20px 20px 20px 20px;
+  background: rgba(255, 255, 255, 1);
+  position: absolute;
+  top: 175px;
+  right: 100px;
+  text-align: right;
+  width: 350px;
+  z-index: 100;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  /* background-image: linear-gradient(
+    to left,
+    white 78%,
+    transparent 100%
+  ); */
+}
+
+.logo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 250px;
+    height: 250px;
+}
+
+.price {
+  box-sizing: border-box;
+  /* float: left; */
+  width: 100%;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* .price img {
+  width: 100%;
+} */
+
+.mediaLogo {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  top: 150px;
+  width: 31%;
+}
+
+.question {
+  color: white;
+  box-sizing: border-box;
+  width: 50%;
+  background: #6D4C41;
+  padding: 10px 10px 10px 20px;
+  float: left;
+}
+
+.float-20 {
+  float: left;
+  width: 20%;
+  margin-top: 6px;
+}
+
+.float-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.float-30 {
+  float: left;
+  width: 30%;
+  margin-top: 6px;
+}
+
+.float-50 {
+  float: left;
+  width: 50%;
+  margin-top: 6px;
+}
+
+.float-75 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.formrow:after {
+  content: "";
+  display: table;
+  clear: both;
+  margin-top: 10px;
+}
+
+.formrow {
+  margin-top: 10px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+
+.form-label {
+  line-height: 25px;
+}
+
+.auth {
+  color: white;
+  background: #01579B;
+  grid-area: logic;
+}
+
+.reg {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.login {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.authInput {
+  width: 100%;
+  border-radius: 5px;
+  border: 0px;
+  padding: 5px;
+  background-color: white;
+}
+
+.auth input:focus {
+  outline-offset: 0px;
+  outline: 0px;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #0288D1;
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #0288D1;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+.main-button {
+  height: 50px;
+  font-size: 20px;
+  background: #0288D1;
+  color: white;
+  width: 100%;
+  border-radius: 5px;
+  border: 0px;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.loading{
+  font-size:0;
+  width:30px;
+  height:30px;
+  margin-top:5px;
+  border-radius:15px;
+  padding:0;
+  border:3px solid #FFFFFF;
+  border-bottom:3px solid rgba(255,255,255,0.0);
+  border-left:3px solid rgba(255,255,255,0.0);
+  background-color:transparent !important;
+  animation-name: rotateAnimation;
+  animation-duration: 1s;
+  animation-delay: 0.2s;
+  animation-iteration-count: infinite;
+}
+
+.beforeLoading {
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  background: #0288D1;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0px;
+  padding: 5px;
+}
+
+input[type="submit"] {
+  transition: all 0.3s ease;
+}
+
+.errorFormat {
+  border: 1px solid #F50057;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #F50057;
+}
+
+.infoFormat {
+  border: 1px solid #00C853;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #00C853;
+}
+
+.questionPic {
+  width: 100%;
+}
+
+#survey {
+  position: relative;
+}
+
+.content {
+  /* position: absolute; */
+  /* top: 20px; */
+  /* left: 20px; */
+  background: #ffffff;
+  padding: 10px;
+}
+
+.answerButton {
+  background: #00C853;
+  padding: 10px;
+  border: none;
+  margin-right: 10px;
+  color: #ffffff;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.footer {
+  background: #6D4C41;
+  padding: 10px;
+  grid-area: footer;
+}
+
+.sup {
+  position: relative;
+  bottom: 1ex; 
+  font-size: 50%;
+}
+
+.inter {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.pLink {
+  cursor: pointer;
+  text-align: right;
+}
+
+@keyframes rotateAnimation {
+    0%   {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
