@@ -400,6 +400,7 @@ input[type="submit"] {
   background: #6D4C41;
   padding: 10px;
   grid-area: footer;
+  color: #ffffff;
 }
 
 .sup {
