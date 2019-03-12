@@ -47,9 +47,7 @@
               id="metadata10"><rdf:RDF><cc:Work
                   rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
                     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title>Tesco Logo</dc:title></cc:Work></rdf:RDF></metadata><defs
-              id="defs8">
-              
-              
+              id="defs8">   
             </defs>
             <g
               id="g4178"><path

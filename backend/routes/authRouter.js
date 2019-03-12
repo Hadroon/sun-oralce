@@ -309,4 +309,54 @@ router.post('/resetpass', async (req, res) => {
   }
 });
 
+router.post('/google-login', async (req, res) => {
+
+  const playLoad = req.body.user;
+  let user
+  user = await User.findOne({ email: playLoad.U3 });
+
+  if (user) {
+    // TODO: Ellenőrizni, hogy megvannak-e a checkboxxai
+  } else {
+    
+    user = new User()
+    user.email = playLoad.U3
+    user.firstName = playLoad.ofa
+    user.lastName = playLoad.wea
+    user.googleToken = playLoad.Eea
+  
+    var date = new Date()
+    date.setHours(date.getHours() + 1)
+    user.registered = date
+  
+    user.isEmailVerified = true
+  
+    let adminAccounts = [
+      'csilla.varfoldi@wangaru-interactive.com',
+      'gabor.muranyi@wangaru-interactive.com'
+    ]
+  
+    let isAdmin = adminAccounts.includes(user.email)
+  
+    if (isAdmin) {
+      user.roles = ['user', 'admin']
+    } else {
+      user.roles = ['user']
+    }
+  
+    user.save(function (err) {
+      if (err) throw err
+    })
+  }
+
+  let fullName = playLoad.wea + ' ' + playLoad.ofa
+
+  let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.U3 }, secret, {
+    expiresIn: 86400
+  })
+  var decoded = jwt.verify(token, secret)
+  console.log(decoded)
+  res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
+});
+
 module.exports = router
