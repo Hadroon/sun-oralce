@@ -1,5 +1,5 @@
 <template>
-  <div class="mainWrapper">
+  <div id="mainWrapper" class="mainWrapper hidden">
     <div id="first">
       <img class="headpic" src="/images/head4.jpg" alt="">
       <!-- <img class="spinner" src="/images/turbine.png" alt=""> -->
