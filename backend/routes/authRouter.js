@@ -171,6 +171,7 @@ router.post('/login', function (req, res) {
     }
 
     if (user) {
+      if (!user.password) return res.status(200).send({ error: ['Nem megfelelő adatok.'] })
       const passCrypt = bcrypt.compareSync(loginData.password, user.password)
 
       if (!passCrypt) {
