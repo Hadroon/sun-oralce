@@ -21,7 +21,7 @@ var userSchema = mongoose.Schema({
   emailVerificationToken: String,
   passwordToken: String,
   roles: Array,
-  googleToken: String
+  googleLogin: Boolean
 });
 
 userSchema.methods.generateHash = function (password) {

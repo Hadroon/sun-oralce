@@ -30,15 +30,15 @@ export default {
       // See https://developers.google.com/identity/sign-in/web/reference#users
       const profile = googleUser.getBasicProfile()
       var id_token = googleUser.getAuthResponse().id_token
-      this.onSignIn(profile)
+      this.onSignIn(profile, id_token)
     },
     onSignInError (error) {
       // `error` contains any error occurred.
       console.log('OH NOES', error)
     },
-    onSignIn: async function (googleUser) {
+    onSignIn: async function (profile, id_token) {
       try {
-        let response = await this.$http.post('/google-login', { user: googleUser })
+        let response = await this.$http.post('/google-login', { googleToken: id_token })
         if(response.data.auth) {
           localStorage.sunToken = response.data.token
           this.$store.commit('setAuthenticated', response.data)
