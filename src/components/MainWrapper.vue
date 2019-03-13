@@ -6,20 +6,23 @@
       <!-- <img class="logo" src="/images/logo.jpg" alt=""> -->
       <div class="headText">
         <h1>
+          Mennyire vagy <span class="brown">környezettudatos</span>?
+        </h1>
+        <h1>
           A <span class="brown">Földdel</span> együtt most Te is nyerhetsz!
         </h1>
         <p>Sorsolás: 2019.04.22.</p>
       </div>
-      <div class="headTextTwo">
+      <!-- <div class="headTextTwo">
         <h1>
           Mennyire vagy <span class="brown">környezettudatos</span>?
         </h1>
-      </div>
+      </div> -->
     </div>
     <div id="second">
       <h3 class="secondHead">
         Töltsd ki pár perces kérdőívünket és hasznos tippekkel látunk el hogy hogyan tudnád élhetőbbé tenni a környezetedet. 
-        Válaszaiddal most <span class="brown bold">500.000 Ft értékű</span> vásárlási <span class="brown bold">utalványt nyerhetsz.</span>
+        Válaszaiddal most <span class="highlight">500.000 Ft értékű</span> vásárlási <span class="highlight">utalványt nyerhetsz.</span>
         <br>
         <br />
         Válassz ajándékkártyáink közül:
