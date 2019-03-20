@@ -1,10 +1,7 @@
 <template>
-  <!-- <div id="mainWrapper" class="mainWrapper hidden"> -->
-  <div id="mainWrapper" class="mainWrapper">
+  <div id="mainWrapper" class="mainWrapper hidden">
     <div id="first">
       <img class="headpic" src="/images/head4.jpg" alt="">
-      <!-- <img class="spinner" src="/images/turbine.png" alt=""> -->
-      <!-- <img class="logo" src="/images/logo.jpg" alt=""> -->
       <div class="headText">
         <h1>
           Mennyire vagy <span class="brown">környezettudatos</span>?
@@ -14,11 +11,6 @@
         </h1>
         <p>Sorsolás: 2019.04.22.</p>
       </div>
-      <!-- <div class="headTextTwo">
-        <h1>
-          Mennyire vagy <span class="brown">környezettudatos</span>?
-        </h1>
-      </div> -->
     </div>
     <div id="second">
       <h3 class="secondHead">
@@ -109,3 +101,4 @@ export default {
   }
 }
 </script>
+

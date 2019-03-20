@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <div :class="hiderClass" id="hider">
+    <div :class="hiderClass" id="hider">
       <form @submit="letMeSee" id="solarInput" action="">
         <label for="">Kérelek add meg a jelszót: </label>
         <input v-model="pass" type="password">
@@ -11,7 +11,14 @@
       <div class="hiderRight" :style="rightStyle">
         <img src="/images/solar2.jpg" alt="">
       </div>
-    </div> -->
+    </div>
+    <div v-if="sunCookie" id="cookie-box">
+      <p>
+        Az oldal “cookie”-t (sütiket) használ. Az oldal böngészésével elfogadja cégünk cookie-szabályzatát. 
+        Részletesebb tájékoztatásért lásd: <a style="color: #ffffff;" href="#">Adatvédelmi szabályzatunkat</a>
+      </p>
+      <button @click="cookieOk" class="cookie-button">Rendben</button>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -21,6 +28,10 @@ export default {
   name: 'App',
   created () {
     const sunToken = localStorage.getItem('sunToken')
+    const sunCookie = localStorage.getItem('sunCookie')
+    if (sunCookie) {
+      this.sunCookie = false
+    }
     const userName = this.$store.getters.getUser.name
     if (sunToken && !userName) {
       this.$store.dispatch('checkUser', sunToken)
@@ -31,7 +42,8 @@ export default {
       hiderClass: 'hider',
       pass: null,
       leftStyle: {},
-      rightStyle: {}
+      rightStyle: {},
+      sunCookie: true
     }
   },
   methods: {
@@ -54,6 +66,11 @@ export default {
           document.getElementById('hider').classList.add("hidden")
          }, 2001);
       }
+    },
+    cookieOk: function (e) {
+      e.preventDefault()
+      localStorage.setItem('sunCookie', true)
+      this.sunCookie = false
     }
   }
 }

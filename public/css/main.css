@@ -381,6 +381,19 @@ p {
   padding: 5px;
 }
 
+.cookie-button {
+  width: auto;
+  height: 50px;
+  font-size: 20px;
+  background: #0288D1;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0px;
+  padding: 5px;
+  margin-top: 15px;
+}
+
 input[type="submit"] {
   transition: all 0.3s ease;
 }
@@ -517,6 +530,19 @@ input[type="submit"] {
   z-index: 10001;
 }
 
+#cookie-box {
+  position: fixed;
+  bottom: 15px;
+  margin: 0 auto;
+  background: #008b00;
+  color: #ffffff;
+  z-index: 8000;
+  padding: 10px;
+  width: 85%;
+  left: 10px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+}
+
 @media only screen and (max-width: 600px) {
   .mainWrapper {
     width: 100%;
@@ -536,6 +562,7 @@ input[type="submit"] {
     left: 50%;
     transform: translateX(-50%);
     top: 17vh;
+    max-width: 100%;
   }
 
   .secondHead {
@@ -584,6 +611,14 @@ input[type="submit"] {
 
   .padding-left-10 {
     padding-left: 0px;
+  }
+
+  #cookie-box {
+    width: 100%;
+  }
+
+  .hidden {
+    display: none;
   }
 }
 
