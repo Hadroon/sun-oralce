@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <div :class="hiderClass" id="hider">
-      <!-- <img class="lakat" src="/images/lakat.png" alt=""> -->
+    <!-- <div :class="hiderClass" id="hider">
       <form @submit="letMeSee" id="solarInput" action="">
         <label for="">Kérelek add meg a jelszót: </label>
         <input v-model="pass" type="password">
@@ -12,7 +11,7 @@
       <div class="hiderRight" :style="rightStyle">
         <img src="/images/solar2.jpg" alt="">
       </div>
-    </div>
+    </div> -->
     <router-view/>
   </div>
 </template>

@@ -142,17 +142,44 @@ p {
   position: relative;
 }
 
-/* .price img {
-  width: 100%;
-} */
+.price-wrapper {
+  position: relative;
+}
+
+.price img {
+  position: relative;
+}
 
 .mediaLogo {
   position: absolute;
   background: #ffffff;
   border-radius: 5px;
   box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
-  top: 150px;
+  left: 10vw;
+  bottom: 5vh;
   width: 31%;
+}
+
+.tescoLogo {
+  padding: 10px;
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  left: 62px;
+  bottom: -8vh;
+  width: 150px;
+}
+
+.hmLogo {
+  padding: 10px;
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  left: 60px;
+  bottom: 78px;
+  width: 150px;
 }
 
 .question {
@@ -488,6 +515,76 @@ input[type="submit"] {
   top: 50%;
   left: 50%;
   z-index: 10001;
+}
+
+@media only screen and (max-width: 600px) {
+  .mainWrapper {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    display: grid;
+    grid-template-areas:"header"
+                        "price"
+                        "logic"
+                        "footer";
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: 1fr;
+    z-index: 99;
+  }
+
+  .headText {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 17vh;
+  }
+
+  .secondHead {
+    padding: 44vh 20px 0px 20px;
+  }
+
+  .tescoLogo {
+    left: 17px;
+  }
+
+  .hmLogo {
+    left: 18px;
+    bottom: 35px;
+    width: 150px;
+  }
+
+  .float-20 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-25 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-30 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-50 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-75 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .padding-left-10 {
+    padding-left: 0px;
+  }
 }
 
 @keyframes rotateAnimation {

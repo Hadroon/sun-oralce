@@ -1,5 +1,6 @@
 <template>
-  <div id="mainWrapper" class="mainWrapper hidden">
+  <!-- <div id="mainWrapper" class="mainWrapper hidden"> -->
+  <div id="mainWrapper" class="mainWrapper">
     <div id="first">
       <img class="headpic" src="/images/head4.jpg" alt="">
       <!-- <img class="spinner" src="/images/turbine.png" alt=""> -->
@@ -27,13 +28,13 @@
         <br />
         Válassz ajándékkártyáink közül:
       </h3>
-      <div class="price">
-        <img src="/images/mobiles_3.png" alt="" style="width: 100%;">
-        <img class="mediaLogo" src="/images/media.png" alt="">
-      </div>
       <div style="position: relative;">
-        <div class="" style="width: 45%; float: left;">
-          <div class="mediaLogo" style="padding: 10px; left: 41px; top: 99px;">
+        <div class="price-wrapper">
+          <img src="/images/mobiles_3.png" alt="" style="width: 100%;">
+          <img class="mediaLogo" src="/images/media.png" alt="">
+        </div>
+        <div class="price-wrapper" style="width: 45%; float: left;">
+          <div class="tescoLogo">
             <svg
               xmlns:dc="http://purl.org/dc/elements/1.1/"
               xmlns:cc="http://creativecommons.org/ns#"
@@ -64,8 +65,8 @@
           </div>
           <img src="/images/groceries.png" alt="" style="width: 70%; margin: 0 auto 0 auto;">
         </div>
-        <div class="" style="width: 45%; float: left;">
-          <img class="mediaLogo" style="z-index: 3; position: absolute; top: 61px; left: 305px; width: 200px; padding: 20px;" src="/images/hm.png" alt="">
+        <div class="price-wrapper" style="width: 45%; float: left;">
+          <img class="hmLogo" src="/images/hm.png" alt="">
           <img style="width: 100%;" src="/images/ruha.jpg" alt="">
         </div>
       </div>

@@ -180,7 +180,7 @@
           </form>
         </div>
       <div>
-        <h2>Jelentkez be velük</h2>
+        <h2>Jelentkez be vele:</h2>
         <google-sso />
       </div>
     </div>
