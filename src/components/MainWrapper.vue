@@ -2,15 +2,15 @@
   <div id="mainWrapper" class="mainWrapper hidden">
     <div id="first">
       <img class="headpic" src="/images/head4.jpg" alt="">
-      <div class="headText">
-        <h1>
-          Mennyire vagy <span class="brown">környezettudatos</span>?
-        </h1>
-        <h1>
-          A <span class="brown">Földdel</span> együtt most Te is nyerhetsz!
-        </h1>
-        <p>Sorsolás: 2019.04.22.</p>
-      </div>
+    </div>
+    <div class="headText">
+      <h1>
+        Mennyire vagy <span class="brown">környezettudatos</span>?
+      </h1>
+      <h1>
+        A <span class="brown">Földdel</span> együtt most Te is nyerhetsz!
+      </h1>
+      <p>Sorsolás: 2019.04.22.</p>
     </div>
     <div id="second">
       <h3 class="secondHead">
