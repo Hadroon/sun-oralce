@@ -1,9 +1,16 @@
 <template>
-  <p>na ez az eredmény</p>
+  <div class="content">
+    {{ getResults }}
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'ResultComp'
+  name: 'ResultComp',
+  computed: {
+    getResults: function () {
+      return this.$store.getters.getResult
+    }
+  }
 }
 </script>
