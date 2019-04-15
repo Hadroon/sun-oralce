@@ -391,7 +391,8 @@ p {
   cursor: pointer;
   border-radius: 5px;
   border: 0px;
-  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
   margin-top: 15px;
 }
 
@@ -539,8 +540,8 @@ input[type="submit"] {
   position: fixed;
   bottom: 15px;
   margin: 0 auto;
-  background: #008b00;
-  color: #ffffff;
+  background: #ffffff;
+  color: #555555;
   z-index: 8000;
   padding: 10px;
   width: 85%;
