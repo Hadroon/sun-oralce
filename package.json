@@ -7,12 +7,12 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "postinstall": "npm run build",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "npm run server | npm run serve",
+    "vue": "cross-env NODE_ENV=development pm2 start webpack-dev-server - name vue — — open — hot",
+    "server": "pm2 start server.js --watch --name backServer"
   },
   "dependencies": {
-    "vue": "^2.5.22",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "bcrypt-nodejs": "latest",
@@ -22,6 +22,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "google-auth-library": "^3.1.0",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
@@ -33,11 +34,15 @@
     "nodemon": "^1.18.6",
     "randomstring": "^1.1.5",
     "v-mask": "^1.3.3",
+    "vue": "^2.5.22",
     "vue-chartjs": "^3.4.0",
     "vue-chartkick": "^0.5.0",
     "vue-datetime": "^1.0.0-beta.8",
+    "vue-google-signin-button": "^1.0.2",
+    "vue-router": "^3.0.1",
     "vue-spinner": "^1.0.3",
     "vue-the-mask": "^0.11.1",
+    "vuex": "^3.0.1",
     "weekstart": "^1.0.0"
   },
   "devDependencies": {

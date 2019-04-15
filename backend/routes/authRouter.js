@@ -4,13 +4,15 @@ const nodemailer = require('nodemailer')
 const RandomString = require('randomstring')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt-nodejs')
-// var ObjectId = require('mongoose').Types.ObjectId;
-const config = require('../config')
+const {OAuth2Client} = require('google-auth-library');
+const CLIENT_ID = '67148300550-i59u3tj3g77c5gv5j85ra1um72ss6uen.apps.googleusercontent.com'
+const client = new OAuth2Client(CLIENT_ID);
 
+const config = require('../config')
 const secret = process.env.SECRET || config.secret
 const User = require('../models/users')
-var activationEmailTemplate = require('../emails/activationEmail')
-var passwordResetEmailTemplate = require('../emails/resetPasswordEmail')
+const activationEmailTemplate = require('../emails/activationEmail')
+const passwordResetEmailTemplate = require('../emails/resetPasswordEmail')
 
 const transporter = nodemailer.createTransport({
   host: 'cl05.webspacecontrol.com',
@@ -25,12 +27,26 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+async function verify(token) {
+  const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+  });
+  // console.log('ticket', ticket)
+  const payload = ticket.getPayload()
+  console.log('payload: ', payload)
+  const userid = payload['sub']
+  // console.log('userid: ', userid)
+  return payload
+  // If request specified a G Suite domain:
+  //const domain = payload['hd'];
+}
+
+// verify().catch(console.error);
+
 router.post('/reg', function (req, res) {
-  console.log('========================================================')
-  console.log(req.hostname);
-  console.log(req.url);
-  console.log(req.originalUrl);
-  console.log('========================================================')
   if (!req.body.newUser) return res.status(500)
   const reqUser = req.body.newUser
   let errors = []
@@ -155,6 +171,7 @@ router.post('/login', function (req, res) {
     }
 
     if (user) {
+      if (!user.password) return res.status(200).send({ error: ['Nem megfelelő adatok.'] })
       const passCrypt = bcrypt.compareSync(loginData.password, user.password)
 
       if (!passCrypt) {
@@ -307,6 +324,78 @@ router.post('/resetpass', async (req, res) => {
     console.log(err);
     throw err;
   }
+});
+
+router.post('/google-login', async (req, res) => {
+
+  // iss: 'accounts.google.com',
+  // azp:
+  //  '67148300550-i59u3tj3g77c5gv5j85ra1um72ss6uen.apps.googleusercontent.com',
+  // aud:
+  //  '67148300550-i59u3tj3g77c5gv5j85ra1um72ss6uen.apps.googleusercontent.com',
+  // sub: '104479455595354378942',
+  // email: 'gabor.muranyi@gmail.com',
+  // email_verified: true,
+  // at_hash: '3pXLQsUUTTE-ypSek8T_1w',
+  // name: 'Gabor Muranyi',
+  // picture:
+  //  'https://lh3.googleusercontent.com/-CCygCykWWEo/AAAAAAAAAAI/AAAAAAAAEJM/t_zvP263dE4/s96-c/photo.jpg',
+  // given_name: 'Gabor',
+  // family_name: 'Muranyi',
+  // locale: 'en',
+  // iat: 1552408710,
+  // exp: 1552412310,
+  // jti: '44f7f3a7ca7680f067cff190ee90cd743440b79a'
+
+  const googleToken = req.body.googleToken
+  const verifiedUser = await verify(googleToken)
+
+  if (verifiedUser.aud !== CLIENT_ID) return
+
+  let user
+  user = await User.findOne({ email: verifiedUser.email });
+
+  if (user) {
+    // TODO: Ellenőrizni, hogy megvannak-e a checkboxxai
+  } else {
+    
+    user = new User()
+    user.email = verifiedUser.email
+    user.firstName = verifiedUser.given_name
+    user.lastName = verifiedUser.family_name
+    user.googleLogin = true
+  
+    var date = new Date()
+    date.setHours(date.getHours() + 1)
+    user.registered = date
+  
+    user.isEmailVerified = true
+  
+    let adminAccounts = [
+      'csilla.varfoldi@wangaru-interactive.com',
+      'gabor.muranyi@wangaru-interactive.com'
+    ]
+  
+    let isAdmin = adminAccounts.includes(user.email)
+  
+    if (isAdmin) {
+      user.roles = ['user', 'admin']
+    } else {
+      user.roles = ['user']
+    }
+  
+    user.save(function (err) {
+      if (err) throw err
+    })
+  }
+
+  let fullName = verifiedUser.family_name + ' ' + verifiedUser.given_name
+
+  let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.U3 }, secret, {
+    expiresIn: 86400
+  })
+  
+  res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
 });
 
 module.exports = router

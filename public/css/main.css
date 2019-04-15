@@ -74,15 +74,17 @@ p {
 }
 
 .mainWrapper {
-    width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    display: grid;
-    grid-template-areas:"header header"
-                        "logic price"
-                        "footer price";
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-columns: 1fr 1fr;
+  box-sizing: border-box;
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  display: grid;
+  grid-template-areas:"header header"
+                      "price logic"
+                      "price footer";
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: 1fr 1fr;
+  z-index: 99;
 }
 
 .spinner {
@@ -98,17 +100,29 @@ p {
   padding: 20px 20px 20px 20px;
   background: rgba(255, 255, 255, 1);
   position: absolute;
-  top: 175px;
-  right: 100px;
-  text-align: right;
+  top: 177px;
+  left: 20px;
+  text-align: left;
   width: 350px;
   z-index: 100;
   box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
-  /* background-image: linear-gradient(
-    to left,
-    white 78%,
-    transparent 100%
-  ); */
+}
+
+.highlight {
+  color: #ffffff;
+  font-size: 36px;
+}
+
+.headTextTwo {
+  padding: 10px;
+  background: rgba(255, 255, 255, 1);
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  text-align: left;
+  width: 350px;
+  z-index: 100;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
 }
 
 .logo {
@@ -129,17 +143,44 @@ p {
   position: relative;
 }
 
-/* .price img {
-  width: 100%;
-} */
+.price-wrapper {
+  position: relative;
+}
+
+.price img {
+  position: relative;
+}
 
 .mediaLogo {
   position: absolute;
   background: #ffffff;
   border-radius: 5px;
   box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
-  top: 150px;
+  left: 10vw;
+  bottom: 5vh;
   width: 31%;
+}
+
+.tescoLogo {
+  padding: 10px;
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  left: 62px;
+  bottom: -8vh;
+  width: 150px;
+}
+
+.hmLogo {
+  padding: 10px;
+  position: absolute;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+  left: 60px;
+  bottom: 78px;
+  width: 150px;
 }
 
 .question {
@@ -341,6 +382,19 @@ p {
   padding: 5px;
 }
 
+.cookie-button {
+  width: auto;
+  height: 50px;
+  font-size: 20px;
+  background: #0288D1;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0px;
+  padding: 5px;
+  margin-top: 15px;
+}
+
 input[type="submit"] {
   transition: all 0.3s ease;
 }
@@ -393,6 +447,7 @@ input[type="submit"] {
   background: #6D4C41;
   padding: 10px;
   grid-area: footer;
+  color: #ffffff;
 }
 
 .sup {
@@ -409,6 +464,167 @@ input[type="submit"] {
 .pLink {
   cursor: pointer;
   text-align: right;
+}
+
+.hider {
+  position: absolute;
+  /* display: flex; */
+  max-width: 100%;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+}
+
+.hiderLeft {
+  width: 50vw;
+  left: 0;
+  top: 0;
+  transition: all 2s;
+  position: absolute;
+}
+
+.hiderRight {
+  width: 50%;
+  top: 0;
+  left: 50%;
+  transition: all 2s;
+  position: absolute;
+}
+
+.hiderLeft img {
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+}
+
+.hiderRight img {
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+}
+
+.hider form {
+  position: absolute;
+  top: 45%;
+  left: 5%;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 5px;
+  color: #555555;
+  z-index: 10001;
+}
+
+.hider form input {
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.lakat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10001;
+}
+
+#cookie-box {
+  position: fixed;
+  bottom: 15px;
+  margin: 0 auto;
+  background: #008b00;
+  color: #ffffff;
+  z-index: 8000;
+  padding: 10px;
+  width: 85%;
+  left: 10px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.26);
+}
+
+@media only screen and (max-width: 600px) {
+  .mainWrapper {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    display: grid;
+    grid-template-areas:"header"
+                        "headertext"
+                        "price"
+                        "logic"
+                        "footer";
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: 1fr;
+    z-index: 99;
+  }
+
+  .headText {
+    left: 0;
+    transform: none;
+    top: 0;
+    width: 100%;
+    position: relative;
+    grid-area: headertext;
+    width: 100%;
+  }
+
+  .secondHead {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .tescoLogo {
+    left: 17px;
+  }
+
+  .hmLogo {
+    left: 18px;
+    bottom: 35px;
+    width: 150px;
+  }
+
+  .float-20 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-25 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-30 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-50 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+  
+  .float-75 {
+    float: none;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .padding-left-10 {
+    padding-left: 0px;
+  }
+
+  #cookie-box {
+    width: 100%;
+  }
+
+  .hidden {
+    display: none;
+  }
 }
 
 @keyframes rotateAnimation {

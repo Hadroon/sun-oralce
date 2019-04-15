@@ -1,33 +1,32 @@
 <template>
-  <div class="mainWrapper">
+  <div id="mainWrapper" class="mainWrapper hidden">
     <div id="first">
       <img class="headpic" src="/images/head4.jpg" alt="">
-      <!-- <img class="spinner" src="/images/turbine.png" alt=""> -->
-      <!-- <img class="logo" src="/images/logo.jpg" alt=""> -->
-      <div class="headText">
-        <h1>
-          Te mennyire vagy <span class="brown">környezettudatos</span>?
-        </h1>
-        <h1>
-          Éljen a <span class="brown">Föld</span>!  - A <span class="brown">Földdel</span> együtt Te is nyerhetsz!
-        </h1>
-        <p>Sorsolás: 2019.04.22.</p>
-      </div>
+    </div>
+    <div class="headText">
+      <h1>
+        Mennyire vagy <span class="brown">környezettudatos</span>?
+      </h1>
+      <h1>
+        A <span class="brown">Földdel</span> együtt most Te is nyerhetsz!
+      </h1>
+      <p>Sorsolás: 2019.04.22.</p>
     </div>
     <div id="second">
       <h3 class="secondHead">
-        Válaszaiddal most <span class="brown bold">500.000 Ft értékű</span> vásárlási <span class="brown bold">utalványt nyerhetsz.</span><br><br>
-        Töltsd ki <span class="brown bold">pár perc</span>es kérdőívünket és <span class="brown">hasznos tippekkel látunk el</span><br> hogy hogyan tudnád élhetőbbé tenni a környezetedet.
+        Töltsd ki pár perces kérdőívünket és hasznos tippekkel látunk el hogy hogyan tudnád élhetőbbé tenni a környezetedet. 
+        Válaszaiddal most <span class="highlight">500.000 Ft értékű</span> vásárlási <span class="highlight">utalványt nyerhetsz.</span>
+        <br>
         <br />
         Válassz ajándékkártyáink közül:
       </h3>
-      <div class="price">
-        <img src="/images/mobiles_3.png" alt="" style="width: 100%;">
-        <img class="mediaLogo" src="/images/media.png" alt="">
-      </div>
       <div style="position: relative;">
-        <div class="" style="width: 45%; float: left;">
-          <div class="mediaLogo" style="padding: 10px; left: 41px; top: 99px;">
+        <div class="price-wrapper">
+          <img src="/images/mobiles_3.png" alt="" style="width: 100%;">
+          <img class="mediaLogo" src="/images/media.png" alt="">
+        </div>
+        <div class="price-wrapper" style="width: 45%; float: left;">
+          <div class="tescoLogo">
             <svg
               xmlns:dc="http://purl.org/dc/elements/1.1/"
               xmlns:cc="http://creativecommons.org/ns#"
@@ -44,9 +43,7 @@
               id="metadata10"><rdf:RDF><cc:Work
                   rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
                     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title>Tesco Logo</dc:title></cc:Work></rdf:RDF></metadata><defs
-              id="defs8">
-              
-              
+              id="defs8">   
             </defs>
             <g
               id="g4178"><path
@@ -60,8 +57,8 @@
           </div>
           <img src="/images/groceries.png" alt="" style="width: 70%; margin: 0 auto 0 auto;">
         </div>
-        <div class="" style="width: 45%; float: left;">
-          <img class="mediaLogo" style="z-index: 3; position: absolute; top: 61px; left: 305px; width: 200px; padding: 20px;" src="/images/hm.png" alt="">
+        <div class="price-wrapper" style="width: 45%; float: left;">
+          <img class="hmLogo" src="/images/hm.png" alt="">
           <img style="width: 100%;" src="/images/ruha.jpg" alt="">
         </div>
       </div>
@@ -104,3 +101,4 @@ export default {
   }
 }
 </script>
+
