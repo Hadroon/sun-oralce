@@ -431,6 +431,10 @@ input[type="submit"] {
   padding: 10px;
 }
 
+.resultPar {
+  margin-bottom: 20px;
+}
+
 .answerButton {
   background: #00C853;
   padding: 10px;

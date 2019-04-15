@@ -59,10 +59,10 @@ export default new Vuex.Store({
         answers: [
           { msg: 'Minden étkezésnél.',
           point: 1,
-          extra: 'Próbáld ki, hogy néha hús helyett sajtot, vagy tojást eszel. Nagyon finom fasírtot lehet készíteni zöldségekből, nekünk ez a kedvencünk: https://kardamomfood.wordpress.com/2015/11/06/voroslencses-zabos-buci/. Jó étvágyat kívánunk!' },
+          extra: 'Próbáld ki, hogy néha hús helyett sajtot, vagy tojást eszel. Nagyon finom fasírtot lehet készíteni zöldségekből, nekünk ez a kedvencünk: <a style="color: #008b00; font-weight: bold; text-decoration: none;" href="https://kardamomfood.wordpress.com/2015/11/06/voroslencses-zabos-buci/" target="_blank">LINK</a>. Jó étvágyat kívánunk!' },
           { msg: 'Naponta legalább egyszer.',
           point: 2,
-          extra: 'Próbáld ki, hogy néha hús helyett sajtot, vagy tojást eszel. Nagyon finom fasírtot lehet készíteni zöldségekből, nekünk ez a kedvencünk: https://kardamomfood.wordpress.com/2015/11/06/voroslencses-zabos-buci/. Jó étvágyat kívánunk!' },
+          extra: 'Próbáld ki, hogy néha hús helyett sajtot, vagy tojást eszel. Nagyon finom fasírtot lehet készíteni zöldségekből, nekünk ez a kedvencünk: <a style="color: #008b00; font-weight: bold; text-decoration: none;" href="https://kardamomfood.wordpress.com/2015/11/06/voroslencses-zabos-buci/" target="_blank">LINK</a>. Jó étvágyat kívánunk!' },
           { msg: '2-3 naponta.',
           point: 3,
           extra: '' },
@@ -206,7 +206,7 @@ export default new Vuex.Store({
     },
     getResult: state => {
       let finalResult = []
-      finalResult.push(state.resultObject.totalPoints)
+      // finalResult.push(state.resultObject.totalPoints)
       if (state.resultObject.totalPoints >= 16) {
         finalResult.push(state.resultAnswers[0].answer)
       } else if (state.resultObject.totalPoints >= 10) {
@@ -214,7 +214,8 @@ export default new Vuex.Store({
       } else {
         finalResult.push(state.resultAnswers[2].answer)
       }
-      finalResult.push('Amennyiben Te leszel a nyertes, emailben értesíteni fogunk.')
+      state.resultObject.extraResult.forEach(extra => finalResult.push(extra))
+      finalResult.push('Amennyiben Te leszel a nyertes, emailben értesíteni fogunk. Sok sikert kívánunk!')
       return finalResult
     },
     getCurrentComponent: state => state.currentComponent
