@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
 import router from './router'
-// import { finished } from 'stream';
 
 Vue.use(Vuex)
 
@@ -14,7 +13,7 @@ export default new Vuex.Store({
       name: null,
       token: null
     },
-    currentComponent: 'survey-comp',
+    currentComponent: 'auth-component',
     resultObject: {
       totalPoints: 0,
       extraResult: []
@@ -206,7 +205,6 @@ export default new Vuex.Store({
     },
     getResult: state => {
       let finalResult = []
-      // finalResult.push(state.resultObject.totalPoints)
       if (state.resultObject.totalPoints >= 16) {
         finalResult.push(state.resultAnswers[0].answer)
       } else if (state.resultObject.totalPoints >= 10) {
@@ -227,23 +225,14 @@ export default new Vuex.Store({
     registerAnswer (state, playload) {
       this.state.resultObject.totalPoints += playload.point
       if (playload.extra) this.state.resultObject.extraResult.push(playload.extra)
-      // console.log('state: ', state),
-      // console.log('answer', playload)
-      // console.log(this.state.resultObject)
     },
     setComponent (state, playload) {
-      console.log('component sterrer: ', playload)
       state.currentComponent = playload
     }
   },
   actions: {
-    chackContext (context) {
-    },
     checkUser: async function (context, playload) {
-      console.log('haho')
       let response = await Axios.get('/check/' + playload)
-      console.log('ketto')
-      console.log('response: ', response)
       if (response.data.auth) {
         context.commit('setAuthenticated', response.data)
         context.commit('setComponent', 'survey-comp')

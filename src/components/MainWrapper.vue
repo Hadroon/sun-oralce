@@ -102,7 +102,6 @@ export default {
       return this.$store.getters.getUser
     },
     currentComponent: function () {
-      // console.log('main getter: ', this.$store.getters.getCurrentComponent)
       return this.$store.getters.getCurrentComponent
     }
   }

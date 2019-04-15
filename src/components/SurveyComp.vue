@@ -24,12 +24,9 @@ export default {
   methods: {
     vote: function (answer, answerindex) {
       if (this.currentQuestionIndex < this.surveyLength - 1) {
-        // this.result.push([this.currentQuestionIndex, answerindex])
         this.$store.commit('registerAnswer', answer)
         this.currentQuestionIndex++
       } else {
-        console.log('vége')
-        // console.log(this.$store.getters.getResult)
         this.$store.commit('setComponent', 'result-comp')
       }
     }

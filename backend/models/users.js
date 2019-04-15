@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-// define the schema for our user model
 var userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: String,

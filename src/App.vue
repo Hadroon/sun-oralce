@@ -49,13 +49,11 @@ export default {
   methods: {
     letMeSee: function (e) {
       e.preventDefault()
-      // console.log(window)
       document.getElementById('mainWrapper').classList.remove("hidden")
       document.getElementById('solarInput').classList.add("hidden")
 
       let width = window.innerWidth
       if (this.pass === 'solar') {
-        // alert('hello')
         this.leftStyle = {
           left: 0 - width / 2 + 'px'
         }

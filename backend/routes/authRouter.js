@@ -34,17 +34,12 @@ async function verify(token) {
       // Or, if multiple clients access the backend:
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
   });
-  // console.log('ticket', ticket)
   const payload = ticket.getPayload()
-  console.log('payload: ', payload)
   const userid = payload['sub']
-  // console.log('userid: ', userid)
   return payload
   // If request specified a G Suite domain:
   //const domain = payload['hd'];
 }
-
-// verify().catch(console.error);
 
 router.post('/reg', function (req, res) {
   if (!req.body.newUser) return res.status(500)

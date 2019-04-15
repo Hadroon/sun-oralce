@@ -254,7 +254,6 @@ export default {
       this.regSubmitStyle = 'loading'
       try {
         let response = await this.$http.post('/reg', { newUser: this.newUser })
-        // console.log(response)
         if (response.data.succesMessage) {
           // TODO: what is succes?
           this.infos = response.data.succesMessage
@@ -269,7 +268,7 @@ export default {
         }
         return
       } catch (err) {
-        // console.log(err)
+        console.log(err)
       }
     },
     login: async function (e) {
@@ -292,6 +291,7 @@ export default {
             this.logSubmitStyle = 'beforeLoading'
             localStorage.sunToken = response.data.token
             this.$store.commit('setAuthenticated', response.data)
+            this.$store.commit('setComponent', 'survey-comp')
         }
       } catch (err) {
         console.log(err)
@@ -333,10 +333,10 @@ export default {
           this.logSubmitStyle = 'beforeLoading'
         }
         if (response.data.auth) {
-          // this.resettoken = null
           this.logSubmitStyle = 'beforeLoading'
           localStorage.sunToken = response.data.token
           this.$store.commit('setAuthenticated', response.data)
+          this.$store.commit('setComponent', 'survey-comp')
         }
       } catch (err) {
         console.log(err)
