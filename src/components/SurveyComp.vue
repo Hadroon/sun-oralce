@@ -1,13 +1,11 @@
 <template>
   <div id="survey" class="auth">
-    <!-- {{question.question}} -->
-    <!-- {{question.img}} -->
     <div class="content">
       <h2 class="brown">
         {{question.question}} ({{currentQuestionIndex + 1}}/{{surveyLength}})
       </h2>
-      <button class="answerButton" @click="vote(answerindex)" v-for="(answer, answerindex) in question.answers" :key="answer">
-        {{answer}}
+      <button class="answerButton" @click="vote(answer, answerindex)" v-for="(answer, answerindex) in question.answers" :key="answer.msg">
+        {{answer.msg}}
       </button>
     </div>
     <img class="questionPic" :src="'/images/' + question.img" alt="">
@@ -24,12 +22,12 @@ export default {
     }
   },
   methods: {
-    vote: function (answerindex) {
-      if (this.currentQuestionIndex < this.surveyLength) {
-        this.result.push([this.currentQuestionIndex, answerindex])
+    vote: function (answer, answerindex) {
+      if (this.currentQuestionIndex < this.surveyLength - 1) {
+        this.$store.commit('registerAnswer', answer)
         this.currentQuestionIndex++
       } else {
-
+        this.$store.commit('setComponent', 'result-comp')
       }
     }
   },

@@ -75,8 +75,6 @@ router.get('/getsubmissionsdatas', async (req, res) => {
 
   let submissions = await Submission.find({});
 
-  console.log(submissions);
-
   return res.status(200).send({ message: 'Köszi a kódot'});
 });
 

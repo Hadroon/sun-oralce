@@ -1,4 +1,4 @@
 module.exports = {
   secret: 'valami',
-  infoEmailPass: ''
+  infoEmailPass: 'jelszo0500'
 }
