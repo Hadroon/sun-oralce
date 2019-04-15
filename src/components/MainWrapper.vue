@@ -64,8 +64,9 @@
       </div>
       <img class="separator" src="/images/grass.png" alt="">
     </div>
-    <auth-component v-if="!user.auth" :resettoken="resettoken" />
-    <survey-comp v-if="user.auth" />
+    <component v-bind:is="currentComponent"></component>
+    <!-- <auth-component v-if="!user.auth" :resettoken="resettoken" /> -->
+    <!-- <survey-comp v-if="user.auth" /> -->
     <footer-comp class="footer" />
   </div>
 </template>
@@ -73,6 +74,7 @@
 <script>
 import AuthComponent from '@/components/Authentication.vue'
 import SurveyComp from '@/components/SurveyComp.vue'
+import ResultComp from '@/components/ResultComp.vue'
 import FooterComp from '@/components/FooterComp.vue'
 
 export default {
@@ -80,7 +82,8 @@ export default {
   components: {
     AuthComponent,
     SurveyComp,
-    FooterComp
+    FooterComp,
+    ResultComp
   },
   created () {
     if (this.$route.name === 'reset' && this.$route.params.resettoken) {
@@ -97,6 +100,10 @@ export default {
   computed: {
     user: function () {
       return this.$store.getters.getUser
+    },
+    currentComponent: function () {
+      // console.log('main getter: ', this.$store.getters.getCurrentComponent)
+      return this.$store.getters.getCurrentComponent
     }
   }
 }
