@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-var userSchema = mongoose.Schema({
+var userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: String,
   firstName: String,
@@ -20,11 +20,14 @@ var userSchema = mongoose.Schema({
   emailVerificationToken: String,
   passwordToken: String,
   roles: Array,
-  googleLogin: Boolean
+  googleLogin: Boolean,
+  result: Array
 });
 
 userSchema.methods.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-module.exports = mongoose.model('User', userSchema);
+mongoose.model('User', userSchema);
+
+module.exports = userSchema;

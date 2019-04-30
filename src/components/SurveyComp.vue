@@ -23,10 +23,16 @@ export default {
   },
   methods: {
     vote: function (answer, answerindex) {
+      let answerPlayload = {
+        answer,
+        answerindex
+      }
       if (this.currentQuestionIndex < this.surveyLength - 1) {
-        this.$store.commit('registerAnswer', answer)
+        this.$store.commit('registerAnswer', answerPlayload)
         this.currentQuestionIndex++
       } else {
+        this.$store.commit('registerAnswer', answerPlayload)
+        this.$store.dispatch('finishSurvey')
         this.$store.commit('setComponent', 'result-comp')
       }
     }

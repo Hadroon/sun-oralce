@@ -4,6 +4,7 @@ import Axios from 'axios'
 import router from './router'
 
 Vue.use(Vuex)
+Vue.config.devtools = false
 
 export default new Vuex.Store({
   state: {
@@ -14,10 +15,7 @@ export default new Vuex.Store({
       token: null
     },
     currentComponent: 'auth-component',
-    resultObject: {
-      totalPoints: 0,
-      extraResult: []
-    },
+    resultObject: [],
     survey: [
       {
         questionId: 0,
@@ -205,14 +203,16 @@ export default new Vuex.Store({
     },
     getResult: state => {
       let finalResult = []
-      if (state.resultObject.totalPoints >= 16) {
+      let totalPoints = 0;
+      state.resultObject.forEach(answerObject => totalPoints += answerObject.answer.point )
+      if (totalPoints >= 16) {
         finalResult.push(state.resultAnswers[0].answer)
-      } else if (state.resultObject.totalPoints >= 10) {
+      } else if (totalPoints >= 10) {
         finalResult.push(state.resultAnswers[1].answer)
       } else {
         finalResult.push(state.resultAnswers[2].answer)
       }
-      state.resultObject.extraResult.forEach(extra => finalResult.push(extra))
+      state.resultObject.forEach(answerObject => finalResult.push(answerObject.answer.extra))
       finalResult.push('Amennyiben Te leszel a nyertes, emailben értesíteni fogunk. Sok sikert kívánunk!')
       return finalResult
     },
@@ -223,11 +223,13 @@ export default new Vuex.Store({
       state.authenticated = playload
     },
     registerAnswer (state, playload) {
-      this.state.resultObject.totalPoints += playload.point
-      if (playload.extra) this.state.resultObject.extraResult.push(playload.extra)
+      state.resultObject.push(playload)
     },
     setComponent (state, playload) {
       state.currentComponent = playload
+    },
+    setResultObject (state, playload) {
+      state.resultObject = playload
     }
   },
   actions: {
@@ -235,7 +237,12 @@ export default new Vuex.Store({
       let response = await Axios.get('/check/' + playload)
       if (response.data.auth) {
         context.commit('setAuthenticated', response.data)
-        context.commit('setComponent', 'survey-comp')
+        if (response.data.result.length === 8) {
+          context.commit('setResultObject', response.data.result)
+          context.commit('setComponent', 'result-comp')
+        } else {
+          context.commit('setComponent', 'survey-comp')
+        }
       }
     },
     validateEmilToken: async function (context, playload) {
@@ -247,6 +254,14 @@ export default new Vuex.Store({
         // TODO: handle if auth false
       }
       router.push({ name: 'main' })
+    },
+    finishSurvey: async function (context) {
+      const token = localStorage.getItem('sunToken')
+      const playload = {
+        token,
+        result: context.state.resultObject
+      }
+      await Axios.post('/result', playload)
     }
   }
 })

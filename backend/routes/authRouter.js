@@ -10,7 +10,8 @@ const client = new OAuth2Client(CLIENT_ID);
 
 const config = require('../config')
 const secret = process.env.SECRET || config.secret
-const User = require('../models/users')
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
 const activationEmailTemplate = require('../emails/activationEmail')
 const passwordResetEmailTemplate = require('../emails/resetPasswordEmail')
 
@@ -27,7 +28,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-async function verify(token) {
+async function verifyGoogle(token) {
   const ticket = await client.verifyIdToken({
       idToken: token,
       audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
@@ -101,6 +102,7 @@ router.post('/reg', function (req, res) {
         newUserObject.registered = date
 
         newUserObject.isEmailVerified = false
+        newUserObject.result = []
 
         let adminAccounts = ['csilla.varfoldi@wangaru-interactive.com',
           'gabor.muranyi@wangaru-interactive.com']
@@ -185,7 +187,7 @@ router.post('/login', function (req, res) {
       let token = jwt.sign({ id: user._id, roles: user.roles, name: fullName, email: user.email }, secret, {
         expiresIn: 86400
       })
-      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
+      res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles, result: user.result })
     } else {
       return res.status(200).send({ error: ['Hiba történt. Kérlek, ellenőrizd a belépési adatokat.'] })
     }
@@ -215,17 +217,17 @@ router.get('/validateemail/:token', async (req, res) => {
 })
 
 router.get('/check/:token', async (req, res) => {
-  let token = req.params.token
+  const token = req.params.token
   try {
     var decoded = jwt.verify(token, secret)
-    let user = await User.findById(decoded.id, null, { lean: true })
-    if (!user) return res.status(200).send({ auth: false })
+    var user = await User.findById(decoded.id, null, { lean: true })
+    if (!user) return res.status(200).send({ auth: false , result: user.result})
   } catch (err) {
     return res.status(200).send({ auth: false })
   }
 
   if (decoded.name) {
-    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles, token: token })
+    return res.status(200).send({ auth: true, name: decoded.name, roles: decoded.roles, token: token, result: user.result })
   }
   return res.status(200).send({ auth: false })
 })
@@ -343,7 +345,7 @@ router.post('/google-login', async (req, res) => {
   // jti: '44f7f3a7ca7680f067cff190ee90cd743440b79a'
 
   const googleToken = req.body.googleToken
-  const verifiedUser = await verify(googleToken)
+  const verifiedUser = await verifyGoogle(googleToken)
 
   if (verifiedUser.aud !== CLIENT_ID) return
 
@@ -390,7 +392,19 @@ router.post('/google-login', async (req, res) => {
     expiresIn: 86400
   })
   
-  res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles })
+  res.status(200).send({ auth: true, token: token, name: fullName, roles: user.roles, result: user.result })
+});
+
+router.post('/result', async (req, res) => {
+  const token = req.body.token
+  try {
+    var decoded = jwt.verify(token, secret)
+    await User.update({ _id: decoded.id }, { $set: { result: req.body.result } })
+    return res.status(201).send('ok')
+  } catch (err) {
+    console.log(err)
+    return res.status(204)
+  }
 });
 
 module.exports = router

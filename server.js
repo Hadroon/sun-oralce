@@ -13,6 +13,8 @@ var history = require('connect-history-api-fallback')
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sun-oracle'
 mongoose.connect(mongoUri)
 
+require('./backend/models/users');
+
 var authRouter = require('./backend/routes/authRouter')
 
 var app = express()

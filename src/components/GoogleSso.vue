@@ -42,7 +42,13 @@ export default {
         if(response.data.auth) {
           localStorage.sunToken = response.data.token
           this.$store.commit('setAuthenticated', response.data)
-          this.$store.commit('setComponent', 'survey-comp')
+
+          if (response.data.result.length === 8) {
+            this.$store.commit('setResultObject', response.data.result)
+            this.$store.commit('setComponent', 'result-comp')
+          } else {
+            this.$store.commit('setComponent', 'survey-comp')
+          }
         }
       } catch (err) {
         console.log(err)

@@ -13,7 +13,6 @@ Vue.prototype.$http = Axios
 
 Vue.use(GSignInButton)
 Vue.use(VueMask)
-// Vue.config.devtools = true
 
 const token = localStorage.getItem('sunToken')
 if (token) {

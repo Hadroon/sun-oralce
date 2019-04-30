@@ -156,7 +156,7 @@
         </div>
         <p class="pLink" @click="canShowForgotPassword = !canShowForgotPassword">Vissza a bejelentkezéshez</p>
       </form>
-        <div>    
+        <div>
           <form action v-if="resettoken" @submit="resetpass" method="post">
             <div class="formrow">
               <div class="float-20" style="width: 180px;">
@@ -288,10 +288,15 @@ export default {
           return this.loginInfos = response.data.info
         }
         if (response.data.auth) {
-            this.logSubmitStyle = 'beforeLoading'
-            localStorage.sunToken = response.data.token
-            this.$store.commit('setAuthenticated', response.data)
+          this.logSubmitStyle = 'beforeLoading'
+          localStorage.sunToken = response.data.token
+          this.$store.commit('setAuthenticated', response.data)
+          if (response.data.result.length === 8) {
+            this.$store.commit('setResultObject', response.data.result)
+            this.$store.commit('setComponent', 'result-comp')
+          } else {
             this.$store.commit('setComponent', 'survey-comp')
+          }
         }
       } catch (err) {
         console.log(err)
